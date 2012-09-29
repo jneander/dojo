@@ -8,9 +8,12 @@ gem 'rails', '3.2.8'
 
 group :development do
   gem 'rspec-rails', '~> 2.0'
+  gem 'sqlite3', '1.3.6'
 end
 group :test do
   gem 'rspec', '~> 2.0'
+  gem 'webrat', '0.7.3'
+  gem 'factory_girl_rails', '1.0'
 end
 
 
