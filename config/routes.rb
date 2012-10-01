@@ -1,5 +1,5 @@
 Dojo::Application.routes.draw do
-  match "/kata/:id", :to => 'kata#show'
+  resources :katas
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'

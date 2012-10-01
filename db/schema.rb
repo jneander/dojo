@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(:version => 20120928183348) do
 
-  create_table "kata", :force => true do |t|
+  create_table "katas", :force => true do |t|
     t.string   "link"
     t.string   "title"
     t.string   "description"
