@@ -1,0 +1,23 @@
+<h3>Available Katas</h3>
+
+<table class='table table-striped'>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Link</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <% @katas.each do |kata| %>
+      <tr>
+        <td><%= kata.title %></td>
+        <td><%= kata.link %></td>
+        <td><%= kata.description %></td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>

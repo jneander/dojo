@@ -16,4 +16,9 @@ class KatasController < ApplicationController
     redirect_to :action => 'show', :id => @kata.id
   end
 
+  def index
+    @katas = Dojo::Repository.kata.records.values
+    render :index
+  end
+
 end
