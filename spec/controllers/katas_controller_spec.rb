@@ -3,17 +3,15 @@ require 'spec_helper'
 describe KatasController do
   render_views
 
-  before(:each) do
-    @base_title = "Dojo"
-  end
+  let (:repo) { Dojo::Repository.kata }
+  let (:attr) {{ title:       "Example Title",
+                 description: "Example Description",
+                 link:        "https://vimeo.com/50459431" }}
 
   describe "GET 'show'" do
-    before(:each) do
-      @kata = Factory(:kata)
-    end
-
     it "returns http success" do
-      get 'show', :id => @kata
+      @kata = repo.save(repo.new(attr))
+      get 'show', :id => @kata.id
       response.should be_success
     end
   end
@@ -26,20 +24,14 @@ describe KatasController do
   end
 
   describe "POST 'create'" do
-    before(:each) do
-      @attr = { title:       "Example Kata",
-                description: "Example Description",
-                link:        "https://vimeo.com/50459431" }
-    end
-
     it "creates a kata" do
-      lambda { post :create, :kata => @attr }.
-        should change(Kata, :count).by(1)
+      lambda { post :create, :kata => attr }.
+        should change(repo.records, :size).by(1)
     end
 
     it "redirects to the kata show page" do
-      post :create, :kata => @attr
-      response.should redirect_to(kata_path(assigns(:kata)))
+      post :create, :kata => attr
+      response.should redirect_to(kata_path(assigns(:kata).id))
     end
   end
 

@@ -1,19 +1,19 @@
+require 'dojo/repository'
+
 class KatasController < ApplicationController
 
   def show
-    @title = "Show Kata"
-    @kata = Kata.find(params[:id])
+    @kata = Dojo::Repository.kata.find(params[:id])
   end
 
   def new
-    @title = "Create Kata"
-    @kata = Kata.new
+    render :new
   end
 
   def create
-    @kata = Kata.new(params[:kata])
-    @kata.save
-    redirect_to @kata
+    @kata = Dojo::Repository.kata.new(params)
+    @kata = Dojo::Repository.kata.save(@kata)
+    redirect_to :action => 'show', :id => @kata.id
   end
 
 end

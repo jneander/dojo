@@ -1,19 +1,28 @@
 <h1><%= title %></h1>
 
-<%= form_for(@kata) do |f| %>
-  <div class='field'>
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
+<%= form_tag '/katas', :class => "form-horizontal" do %>
+  <div class='control-group'>
+    <%= label_tag :title, "Title", :class => 'control-label' %>
+    <div class='controls'>
+      <%= text_field_tag :title %>
+    </div>
   </div>
-  <div class='field'>
-    <%= f.label :link %><br />
-    <%= f.text_field :link %>
+
+  <div class='control-group'>
+    <%= label_tag :link, "Link", :class => 'control-label' %>
+    <div class='controls'>
+      <%= text_field_tag :link %>
+    </div>
   </div>
-  <div class='field'>
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
+
+  <div class='control-group'>
+    <%= label_tag :description, "Description", :class => 'control-label' %>
+    <div class='controls'>
+      <%= text_area_tag :description %>
+    </div>
   </div>
+
   <div class='actions'>
-    <%= f.submit "Submit" %>
+    <%= submit_tag "Submit", :class => 'btn' %>
   </div>
 <% end %>
