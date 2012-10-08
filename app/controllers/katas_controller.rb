@@ -13,7 +13,7 @@ class KatasController < ApplicationController
   def create
     @kata = Dojo::Repository.kata.new(params)
     @kata = Dojo::Repository.kata.save(@kata)
-    redirect_to :action => 'show', :id => @kata.id
+    redirect_to kata_path(@kata.id)
   end
 
   def index

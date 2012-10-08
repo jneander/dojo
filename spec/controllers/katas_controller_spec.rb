@@ -25,8 +25,9 @@ describe KatasController do
 
   describe "POST 'create'" do
     it "creates a kata" do
-      lambda { post :create, :kata => attr }.
+      lambda { post :create, attr }.
         should change(repo.records, :size).by(1)
+      repo.records[1].title.should == "Example Title"
     end
 
     it "redirects to the kata show page" do
