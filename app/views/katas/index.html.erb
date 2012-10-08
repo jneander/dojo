@@ -15,7 +15,7 @@
       <tr data-href='<%= kata_path(kata.id) %>'>
         <td><%= kata.title %></td>
         <td><%= kata.description %></td>
-        <td><%= KatasHelper::Formatter.timestamp(kata.last_updated) %></td>
+        <td><%= datetime_to_date_and_time(kata.last_updated) %></td>
       </tr>
     <% end %>
 
