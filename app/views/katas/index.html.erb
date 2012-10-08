@@ -4,8 +4,8 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Link</th>
       <th>Description</th>
+      <th>Last Updated</th>
     </tr>
   </thead>
 
@@ -14,8 +14,8 @@
     <% @katas.each do |kata| %>
       <tr data-href='<%= kata_path(kata.id) %>'>
         <td><%= kata.title %></td>
-        <td><%= kata.link %></td>
         <td><%= kata.description %></td>
+        <td><%= KatasHelper::Formatter.timestamp(kata.last_updated) %></td>
       </tr>
     <% end %>
 

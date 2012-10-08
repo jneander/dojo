@@ -1,6 +1,7 @@
 require 'dojo/kata_repository'
 
 describe Dojo::KataRepository do
+
   let(:repo) { Dojo::KataRepository.new }
   before(:each) { repo.destroy_all }
 
@@ -29,6 +30,13 @@ describe Dojo::KataRepository do
     kata.id.should == 500
   end
 
+  it "#save stores the time of last update" do
+    create_time = DateTime.now
+    DateTime.stub!(:now).and_return(create_time)
+    kata = repo.save(repo.new(:tite => "Example"))
+    kata.last_updated.should == create_time
+  end
+
   it "#find returns the kata with requested id" do
     kata = repo.save(repo.new(:title => "Example"))
     repo.find(kata.id).title.should == "Example"
@@ -45,4 +53,16 @@ describe Dojo::KataRepository do
     repo.destroy_all
     repo.records.should == {}
   end
+
+  it "#sort sorts by last_updated" do
+    date_stub = DateTime.now
+    DateTime.stub!(:now).and_return(date_stub - 3)
+    kata_1 = repo.save(repo.new)
+    DateTime.stub!(:now).and_return(date_stub - 5)
+    kata_2 = repo.save(repo.new)
+    DateTime.stub!(:now).and_return(date_stub)
+    kata_3 = repo.save(repo.new)
+    repo.sort.should == [kata_3, kata_1, kata_2]
+  end
+
 end

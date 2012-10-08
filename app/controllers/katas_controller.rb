@@ -17,7 +17,7 @@ class KatasController < ApplicationController
   end
 
   def index
-    @katas = Dojo::Repository.kata.records.values
+    @katas = Dojo::Repository.kata.sort
     render :index
   end
 

@@ -1,4 +1,5 @@
 <h2><%= @kata.title %></h2>
 <h3><%= @kata.link %></h3>
 
+<p>Last updated on <%= KatasHelper::Formatter.timestamp(@kata.last_updated) %></p>
 <p><%= @kata.description %></p>
