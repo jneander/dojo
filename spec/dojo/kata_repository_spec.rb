@@ -33,7 +33,7 @@ describe Dojo::KataRepository do
   it "#save stores the time of last update" do
     create_time = DateTime.now
     DateTime.stub!(:now).and_return(create_time)
-    kata = repo.save(repo.new(:tite => "Example"))
+    kata = repo.save(repo.new(:title => "Example"))
     kata.last_updated.should == create_time
   end
 
@@ -43,13 +43,14 @@ describe Dojo::KataRepository do
   end
 
   it "#records returns all katas in the repository" do
-    kata = repo.save(repo.new(:title => "Example"))
+    repo.save(repo.new(:title => "Example"))
+    repo.save(repo.new(:title => "Example 2"))
     Hash[repo.records.map {|k,v| [k, v.title]}].should == 
-      {1 => "Example"}
+      {1 => "Example", 2 => "Example 2"}
   end
 
   it "#destroy_all clears all records" do
-    kata = repo.save(repo.new(:title => "Example"))
+    repo.save(repo.new(:title => "Example"))
     repo.destroy_all
     repo.records.should == {}
   end
