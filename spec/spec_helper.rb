@@ -36,3 +36,7 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 end
+
+def last_record(repo)
+  repo.records[repo.records.keys.max]
+end

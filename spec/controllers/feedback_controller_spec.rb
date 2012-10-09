@@ -13,7 +13,12 @@ describe FeedbackController do
     it "creates a Feedback instance" do
       lambda { post :create, attr }.
         should change(repo.records, :size).by(1)
-      repo.records[1].author.should == "Jeremy"
+      last_record(repo).author.should == "Jeremy"
+    end
+
+    it "assigns the Feedback instance" do
+      post :create, attr
+      assigns(:feedback).should == last_record(repo)
     end
 
     it "redirects to the kata show page" do

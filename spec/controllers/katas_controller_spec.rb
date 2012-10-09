@@ -9,38 +9,77 @@ describe KatasController do
                  link:        "https://vimeo.com/50459431" }}
 
   describe "GET 'show'" do
+
+    let(:kata) { repo.save(repo.new(attr)) }
+
     it "returns http success" do
-      @kata = repo.save(repo.new(attr))
-      get 'show', :id => @kata.id
+      get 'show', :id => kata.id
       response.should be_success
     end
+
+    it "renders the correct template" do
+      get 'show', :id => kata.id
+      assert_template :show
+    end
+
+    it "assigns the Kata instance" do
+      get 'show', :id => kata.id
+      assigns(:kata).should equal kata
+    end
+
   end
 
   describe "GET 'new'" do
+
     it "returns http success" do
       get 'new'
       response.should be_success
     end
+
+    it "renders the correct template" do
+      get 'new'
+      assert_template :new
+    end
+
   end
 
   describe "POST 'create'" do
-    it "creates a kata" do
+
+    it "creates a Kata instance" do
       lambda { post :create, attr }.
         should change(repo.records, :size).by(1)
       repo.records[1].title.should == "Example Title"
     end
 
+    it "assigns the Kata instance" do
+      post :create, attr
+      assigns(:kata).should == last_record(repo)
+    end
+
     it "redirects to the kata show page" do
-      post :create, :kata => attr
+      post :create, attr
       response.should redirect_to(kata_path(assigns(:kata).id))
     end
+
   end
 
   describe "GET 'index'" do
+
     it "returns http success" do
       get 'index'
       response.should be_success
     end
+
+    it "renders the correct template" do
+      get 'index'
+      assert_template :index
+    end
+
+    it "assigns the katas from the repository" do
+      get 'index'
+      assigns(:katas).should == repo.records.values.reverse
+    end
+
   end
 
 end
