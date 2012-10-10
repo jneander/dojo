@@ -1,0 +1,52 @@
+// == STRUCTURES == //
+
+/* ALIGNMENT */
+
+#main {
+  @extend .centered;
+  @extend .max_width;
+  padding: 20px 0;
+}
+
+.sharp {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+}
+
+.max_width {
+  width: 720px;
+}
+
+.centered {
+  margin: 0 auto;
+}
+
+/* BASIN */
+
+.basin {
+  min-height: 20px;
+  padding: 0;
+  margin-bottom: 20px;
+  background-color: whiteSmoke;
+  border: 1px solid #E3E3E3;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.basin_basic {
+  @extend .basin;
+  padding: 20px;
+}
+
+.basin_outer {
+  padding: 0 1px 1px 0;
+  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  border: 1px 0 0 1px solid #DDD;
+}
+
+/* CORRECTIONS */
+
+* > :first-child { margin-top: 0 !important; }
+* > :last-child { margin-bottom: 0 !important; }

@@ -27,6 +27,14 @@ describe KatasController do
       assigns(:kata).should equal kata
     end
 
+    it "assigns the Kata's Feedback instances" do
+      feedback = [Dojo::Repository.feedback.new]
+      Dojo::Repository.feedback.stub!(:find_by_kata_id).
+        and_return(feedback)
+      get 'show', :id => kata.id
+      assigns(:feedback).should == feedback
+    end
+
   end
 
   describe "GET 'new'" do

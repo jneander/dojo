@@ -4,6 +4,7 @@ class KatasController < ApplicationController
 
   def show
     @kata = Dojo::Repository.kata.find(params[:id])
+    @feedback = Dojo::Repository.feedback.find_by_kata_id(params[:id])
   end
 
   def new

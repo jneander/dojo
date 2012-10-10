@@ -51,6 +51,13 @@ describe Dojo::FeedbackRepository do
     repo.find(fb.id).author.should == "Jeremy"
   end
 
+  it "#find_by_kata_id returns Feedback with the requested kata_id" do
+    fb_k1 = repo.save(repo.new(:kata_id => 1))
+    fb_k2 = repo.save(repo.new(:kata_id => 2))
+    repo.find_by_kata_id(1).should == [fb_k1]
+    repo.find_by_kata_id(2).should == [fb_k2]
+  end
+
   it "#records returns all Feedback in the repository" do
     repo.save(repo.new(:author => "Mike"))
     repo.save(repo.new(:author => "Jeremy"))

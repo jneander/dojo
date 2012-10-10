@@ -18,6 +18,10 @@ module Dojo
       records[id.to_i]
     end
 
+    def find_by_kata_id(id)
+      records.values.select {|fb| fb.kata_id == id}
+    end
+
     def records
       @records ||= {}
     end

@@ -9,26 +9,18 @@
   <body>
 
     <div id="header">
-      <div class="container">
-        <div class="row">
-          <div class="span8 offset2">
-            <h1 id="logo"><%= link_to "DOJO", root_url %></h1>
-            <div id="quicklinks">
-              <%= link_to "Create a Kata", new_kata_url, {:class => "btn"} %>
-            </div>
-          </div>
+      <div class="inner">
+        <h1 id="logo"><%= link_to "DOJO", root_url %></h1>
+        <div id="quicklinks">
+          <%= link_to "Create a Kata", new_kata_url, {:class => "btn sharp"} %>
         </div>
       </div>
     </div>
 
-    <div id="content" class="container">
-      <div class="row">
-        <div class="span8 offset2">
+    <div id="main">
 
-          <%= yield %>
+      <%= yield %>
 
-        </div>
-      </div>
     </div>
   </body>
 </html>

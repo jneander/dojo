@@ -1,28 +1,32 @@
-<h1><%= title %></h1>
+<h2>Create a Kata</h1>
 
-<%= form_tag '/katas', :class => "form-horizontal" do %>
-  <div class='control-group'>
-    <%= label_tag :title, "Title", :class => 'control-label' %>
-    <div class='controls'>
-      <%= text_field_tag :title %>
+<div class="basin_basic">
+  <%= form_tag '/katas', :class => "kata_new_form" do %>
+    <div class='control-group'>
+      <%= label_tag :title, "Title", :class => 'control-label' %>
+      <div class='controls'>
+        <%= text_field_tag :title %>
+      </div>
     </div>
-  </div>
 
-  <div class='control-group'>
-    <%= label_tag :link, "Link", :class => 'control-label' %>
-    <div class='controls'>
-      <%= text_field_tag :link %>
+    <div class='control-group'>
+      <%= label_tag :link, "Link", :class => 'control-label' %>
+      <div class='controls'>
+        <%= text_field_tag :link %>
+      </div>
     </div>
-  </div>
 
-  <div class='control-group'>
-    <%= label_tag :description, "Description", :class => 'control-label' %>
-    <div class='controls'>
-      <%= text_area_tag :description %>
+    <div class='control-group'>
+      <%= label_tag :description, "Description", :class => 'control-label' %>
+      <div class='controls'>
+        <%= text_area_tag :description, nil, :rows => 4 %>
+      </div>
     </div>
-  </div>
 
-  <div class='actions'>
-    <%= submit_tag "Submit", :class => 'btn' %>
-  </div>
-<% end %>
+    <div class='control-group'>
+      <div class='controls'>
+        <%= submit_tag "Submit", :class => 'btn' %>
+      </div>
+    </div>
+  <% end %>
+</div>

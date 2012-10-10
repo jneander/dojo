@@ -1,5 +1,40 @@
-<h2><%= @kata.title %></h2>
-<h3><%= @kata.link %></h3>
+<div class="kata_container">
+  <h2><%= @kata.title %></h2>
+  <div class="video_container">
+    <a href="<%= @kata.link %>">
+      <img src="http://tinyurl.com/kataplaceholder" /></a>
+  </div>
+  <div class="description">
+    <p class="timestamp">Last updated on <%= timestamp(@kata.last_updated) %></p>
+    <p class="description"><%= @kata.description %></p>
+  </div>
+</div>
 
-<p>Last updated on <%= datetime_to_date_and_time(@kata.last_updated) %></p>
-<p><%= @kata.description %></p>
+<div class="kata_supplements">
+  <h3><%= feedback_header(@feedback.size) %></h3>
+  <% if (@feedback.size > 0) %>
+    <div class="feedback_stream">
+      <% @feedback.each do |feedback| %>
+        <div class="feedback_container">
+          <p class="message"><%= feedback.message %></p>
+          <small class="timestamp">Submitted by <%= feedback.author %>
+            on <%= timestamp(feedback.created_on) %></small>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="feedback_form">
+    <%= form_tag '/feedback', :class => 'form' do %>
+      <%= hidden_field_tag :kata_id, @kata.id %>
+      <div class="left">
+        <%= text_area_tag :message, "", :placeholder => "Leave some feedback" %>
+      </div>
+      <div class="right">
+        <%= label_tag :author, "Your Name" %>
+        <%= text_field_tag :author %>
+        <%= submit_tag "Submit", :class => 'btn sharp' %>
+      </div>
+    <% end %>
+  </div>
+</div>

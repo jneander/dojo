@@ -1,0 +1,14 @@
+// Place all the styles related to the katas controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "bootstrap";
+
+@import "typography";
+@import "structure";
+@import "header";
+
+@import "kata";
+@import "feedback";
+
+@import "interactivity";

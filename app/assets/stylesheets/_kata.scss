@@ -1,0 +1,33 @@
+// == KATA == //
+
+.kata_container {
+  @extend .max_width;
+  margin: 0px auto;
+}
+
+.kata_container h2 {
+}
+
+.video_container {
+  width: 720px;
+  margin: 0px auto;
+}
+
+.kata_container div.description {
+  @extend .basin;
+  padding: 20px;
+  margin: 20px 0 0 0;
+}
+
+.kata_supplements {
+  margin-top: 20px;
+}
+
+.kata_new_form {
+  @extend .form-horizontal;
+}
+
+.kata_new_form input[type="text"], 
+.kata_new_form textarea {
+  @extend .span4;
+}

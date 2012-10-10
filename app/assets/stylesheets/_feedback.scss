@@ -1,0 +1,44 @@
+// == FEEDBACK == //
+
+.feedback_stream {
+  @extend .basin;
+  margin: 0 0 20px 0;
+}
+
+.feedback_container + .feedback_container {
+  border-top: 1px solid #DDD;
+}
+
+.feedback_container {
+  background-color: whiteSmoke;
+  padding: 20px;
+  margin: 0;
+}
+
+// == FORMS == //
+
+.feedback_form {
+  @extend .basin;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.feedback_form .left {
+  float: left;
+  margin: 0;
+}
+
+.feedback_form .right {
+  width: 286px;
+  margin-left: 20px;
+  float: left;
+}
+
+.feedback_form .left textarea {
+  width: 346px;
+  height: 100px;
+}
+
+.feedback_form .right input[type="text"] {
+  width: 286px;
+}
