@@ -6,9 +6,9 @@ module KatasHelper
 
     def feedback_header(count)
       if (count < 5)
-        "This kata needs feedback. Share your input!"
+        "This kata needs your feedback. Share your thoughts!"
       else
-        "Learn what makes a great kata. Share in feedback!"
+        "Learn what makes a great kata. Share with feedback!"
       end
     end
 
