@@ -28,7 +28,8 @@ describe KatasController do
     end
 
     it "assigns the Kata's Feedback instances" do
-      feedback = [Dojo::Repository.feedback.new]
+      fbrepo = Dojo::Repository.feedback
+      feedback = [fbrepo.save(fbrepo.new)]
       Dojo::Repository.feedback.stub!(:find_by_kata_id).
         and_return(feedback)
       get 'show', :id => kata.id
