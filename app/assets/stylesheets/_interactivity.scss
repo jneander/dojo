@@ -3,3 +3,12 @@
 .clickable:hover {
   cursor: pointer;
 }
+
+.error_highlight {
+  border: 1px solid red !important;
+}
+
+.error_message {
+  display: block;
+  color: red;
+}

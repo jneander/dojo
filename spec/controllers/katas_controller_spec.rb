@@ -40,6 +40,9 @@ describe KatasController do
 
   describe "GET 'new'" do
 
+    let(:attr) {{ title: "", link: "", description: "" }}
+    let(:errors) {{ title: "test value" }}
+
     it "returns http success" do
       get 'new'
       response.should be_success
@@ -50,24 +53,74 @@ describe KatasController do
       assert_template :new
     end
 
+    it "assigns no errors or form_values for new form" do
+      get 'new'
+      assigns(:form_values).should == {}
+      assigns(:errors).should == {}
+    end
+
+    it "assigns values if errors exist" do
+      get 'new', nil, nil, {:form_values => attr}
+      assigns(:form_values).should == stringify_keys(attr)
+    end
+
+    it "assigns errors when present" do
+      get 'new', nil, nil, {:errors => errors}
+      assigns(:errors).should == stringify_keys(errors)
+    end
+
   end
 
   describe "POST 'create'" do
 
-    it "creates a Kata instance" do
-      lambda { post :create, attr }.
-        should change(repo.records, :size).by(1)
-      repo.records[1].title.should == "Example Title"
+    context "with valid parameters" do
+
+      it "creates a Kata instance" do
+        lambda { post :create, attr }.
+          should change(repo.records, :size).by(1)
+        repo.records[1].title.should == "Example Title"
+      end
+
+      it "assigns the Kata instance" do
+        post :create, attr
+        assigns(:kata).should == last_record(repo)
+      end
+
+      it "redirects to the kata show page upon success" do
+        post :create, attr
+        response.should redirect_to(kata_path(assigns(:kata).id))
+      end
+
     end
 
-    it "assigns the Kata instance" do
-      post :create, attr
-      assigns(:kata).should == last_record(repo)
-    end
+    context "with invalid parameters" do
 
-    it "redirects to the kata show page" do
-      post :create, attr
-      response.should redirect_to(kata_path(assigns(:kata).id))
+      let(:attr) {{ title: "", link: "", description: "" }}
+      let(:errors) {{ title: "test value" }}
+
+      it "does not create a Kata instance" do
+        lambda { post :create, attr }.
+          should_not change(repo.records, :size)
+      end
+
+      it "redirects to the new kata page" do
+        Dojo::KataValidator.stub!(:errors).and_return(errors)
+        post :create, attr
+        response.should redirect_to( new_kata_path )
+      end
+
+      it "sends a flash for form_values through the redirect" do
+        Dojo::KataValidator.stub!(:errors).and_return(errors)
+        post :create, attr
+        flash[:form_values].should == attr
+      end
+
+      it "sends a flash for errors through the redirect" do
+        Dojo::KataValidator.stub!(:errors).and_return(errors)
+        post :create, attr
+        flash[:errors].should == errors
+      end
+
     end
 
   end
@@ -91,4 +144,8 @@ describe KatasController do
 
   end
 
+end
+
+def stringify_keys(hash)
+  Hash[hash.map {|k,v| [k.to_s, v]}]
 end
