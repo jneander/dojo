@@ -31,3 +31,12 @@
 .kata_new_form textarea {
   @extend .span4;
 }
+
+#embed_broken {
+  background: #ccc;
+  vertical-align: middle;
+  text-align: center;
+  display: table-cell;
+  width: 720px;
+  height: 405px;
+}
