@@ -1,8 +1,7 @@
 <div class="kata_container">
   <h2><%= @kata.title %></h2>
   <div class="video_container">
-    <a href="<%= @kata.link %>">
-      <img src="http://tinyurl.com/kataplaceholder" /></a>
+    <%= render :partial => @partial %>
   </div>
   <div class="description">
     <p class="timestamp">Last updated on <%= timestamp(@kata.last_updated) %></p>

@@ -1,15 +1,17 @@
+require 'dojo/services/vimeo_service'
 require 'spec_helper'
 
 describe KatasController do
   render_views
 
   let (:repo) { Dojo::Repository.kata }
-  let (:attr) {{ title:       "Example Title",
-                 description: "Example Description",
-                 link:        "https://vimeo.com/50459431" }}
+  let (:base_attr) {{ title:       "Example Title",
+                      description: "Example Description" }}
+  let(:vimeo_uri) { "https://vimeo.com/50459431" }
 
   describe "GET 'show'" do
 
+    let(:attr) { base_attr.update({ link: "http://google.com" }) }
     let(:kata) { repo.save(repo.new(attr)) }
 
     it "returns http success" do
@@ -34,6 +36,35 @@ describe KatasController do
         and_return(feedback)
       get 'show', :id => kata.id
       assigns(:feedback).should == feedback
+    end
+
+    context "using VimeoService" do
+
+      let(:attr) { base_attr.update( link: vimeo_uri ) }
+      let(:kata) { repo.save(repo.new( attr )) }
+
+      before(:each) do 
+        @video = example_video
+      end
+
+      it "assigns a VimeoService embed" do
+        Dojo::Media::VimeoService.should_receive( :embed ).and_return( @video )
+        get 'show', :id => kata.id
+        assigns(:video).should == @video
+      end
+
+      it "renders the vimeo partial if video exists" do
+        Dojo::Media::VimeoService.stub!( :embed ).and_return( @video )
+        get 'show', :id => kata.id
+        response.should render_template( partial: '_vimeo')
+      end
+
+      it "renders the broken_embed partial if video was removed" do
+        Dojo::Media::VimeoService.stub!( :embed ).and_return( nil )
+        get 'show', :id => kata.id
+        response.should render_template( partial: '_broken_embed' )
+      end
+
     end
 
   end
@@ -75,6 +106,8 @@ describe KatasController do
 
     context "with valid parameters" do
 
+      let(:attr) { base_attr.update( link: vimeo_uri ) }
+
       it "creates a Kata instance" do
         lambda { post :create, attr }.
           should change(repo.records, :size).by(1)
@@ -103,7 +136,7 @@ describe KatasController do
           should_not change(repo.records, :size)
       end
 
-      it "redirects to the new kata page" do
+      it "redirects to the new kata page for unknown host" do
         Dojo::KataValidator.stub!(:errors).and_return(errors)
         post :create, attr
         response.should redirect_to( new_kata_path )
@@ -148,4 +181,12 @@ end
 
 def stringify_keys(hash)
   Hash[hash.map {|k,v| [k.to_s, v]}]
+end
+
+def example_video
+  video = Dojo::Media::VimeoVideo.new
+  video.title = "Example Title"
+  video.width = 1152
+  video.height = 720
+  return video
 end
