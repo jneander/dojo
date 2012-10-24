@@ -1,14 +1,12 @@
 require 'spec_helper'
 
-# Specs in this file have access to a helper object that includes
-# the KatasHelper. For example:
-#
-# describe KatasHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       helper.concat_strings("this","that").should == "this that"
-#     end
-#   end
-# end
 describe KatasHelper do
+
+  it ":scale_to_width maintains aspect ratio" do
+    scale_to_width({ width: 1152, height: 720 }, 720).should ==
+      { width: 720, height: 450 }
+    scale_to_width({ width: 1920, height: 1080 }, 540).should ==
+      { width: 540, height: 303 }
+  end
+
 end

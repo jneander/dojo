@@ -37,4 +37,9 @@ module KatasHelper
       end
     end
 
+    def scale_to_width(dimensions, width)
+      scale = width.to_f / dimensions[:width]
+      { width: width, height: (dimensions[:height] * scale).to_i }
+    end
+
 end
