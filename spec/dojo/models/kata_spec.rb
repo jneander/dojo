@@ -26,8 +26,8 @@ describe Dojo::Kata do
     kata.last_updated.should be_instance_of(DateTime)
   end
 
-  it "::attributes returns a list of reader attributes" do
-    Dojo::Kata.attributes.should == [:title, :link, :description]
+  it "::attributes returns a list of alterable attributes" do
+    Dojo::Kata.attributes.should == [:id, :title, :link, :description]
   end
 
 end

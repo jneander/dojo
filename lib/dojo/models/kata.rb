@@ -10,7 +10,7 @@ module Dojo
     end
 
     def self.attributes
-      [:title, :link, :description]
+      [:id, :title, :link, :description]
     end
 
   end
