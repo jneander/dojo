@@ -12,29 +12,32 @@ describe KatasController do
   describe "GET 'show'" do
 
     let(:attr) { base_attr.update({ link: "http://google.com" }) }
-    let(:kata) { repo.save(repo.new( attr )) }
+
+    before(:each) do
+      @kata = repo.save(repo.new( attr ))
+    end
 
     it "returns http success" do
-      get 'show', :id => kata.id
+      get 'show', :id => @kata.id
       response.should be_success
     end
 
     it "renders the correct template" do
-      get 'show', :id => kata.id
+      get 'show', :id => @kata.id
       assert_template :show
     end
 
-    it "assigns the Kata instance" do
-      get 'show', :id => kata.id
-      assigns( :kata ).should equal kata
+    it "assigns the @kata instance" do
+      get 'show', :id => @kata.id
+      assigns( :kata ).should equal @kata
     end
 
-    it "assigns the Kata's Feedback instances" do
+    it "assigns the @kata's Feedback instances" do
       fbrepo = Dojo::Repository.feedback
       feedback = [fbrepo.save( fbrepo.new )]
       Dojo::Repository.feedback.stub!( :find_by_kata_id ).
         and_return( feedback )
-      get 'show', :id => kata.id
+      get 'show', :id => @kata.id
       assigns( :feedback ).should == feedback
     end
 
@@ -43,27 +46,27 @@ describe KatasController do
       let(:uri) { "https://vimeo.com/50459431" }
       let(:service) { Dojo::Media::VimeoService }
       let(:attr) { base_attr.update( link: uri ) }
-      let(:kata) { repo.save(repo.new( attr )) }
 
       before(:each) do 
         @video = example_vimeo_video
+        @kata = repo.save(repo.new( attr ))
       end
 
       it "assigns a VimeoService embed" do
         service.should_receive( :embed ).and_return( @video )
-        get 'show', :id => kata.id
+        get 'show', :id => @kata.id
         assigns( :video ).should == @video
       end
 
       it "renders the vimeo partial if video exists" do
         service.stub!( :embed ).and_return( @video )
-        get 'show', :id => kata.id
+        get 'show', :id => @kata.id
         response.should render_template( partial: '_vimeo' )
       end
 
       it "renders the broken_embed partial if video was removed" do
         service.stub!( :embed ).and_return( nil )
-        get 'show', :id => kata.id
+        get 'show', :id => @kata.id
         response.should render_template( partial: '_broken_embed' )
       end
 
@@ -74,27 +77,27 @@ describe KatasController do
       let(:uri) { "http://www.youtube.com/watch?v=0xtPlviSkxs" }
       let(:service) { Dojo::Media::YouTubeService }
       let(:attr) { base_attr.update( link: uri ) }
-      let(:kata) { repo.save(repo.new( attr )) }
 
       before(:each) do
         @video = example_youtube_video
+        @kata = repo.save(repo.new( attr ))
       end
 
       it "assigns a YouTubeService embed" do
         service.should_receive( :embed ).and_return( @video )
-        get 'show', :id => kata.id
+        get 'show', :id => @kata.id
         assigns( :video ).should == @video
       end
 
       it "renders the youtube partial if video exists" do
         service.stub!( :embed ).and_return( @video )
-        get 'show', :id => kata.id
+        get 'show', :id => @kata.id
         response.should render_template( partial: '_youtube' )
       end
 
       it "renders the broken_embed partial if video was removed" do
         service.stub!( :embed ).and_return( nil )
-        get 'show', :id => kata.id
+        get 'show', :id => @kata.id
         response.should render_template( partial: '_broken_embed' )
       end
 
@@ -105,7 +108,7 @@ describe KatasController do
   describe "GET 'new'" do
 
     let(:attr) {{ title: "", link: "", description: "" }}
-    let(:errors) {{ title: "test value" }}
+    let(:errors) {{ title: "title error" }}
 
     it "returns http success" do
       get 'new'
@@ -135,6 +138,62 @@ describe KatasController do
 
   end
 
+  describe "GET 'edit'" do
+
+    before(:all) do
+      attr = base_attr.update({ link: "http://google.com" })
+      @kata = repo.save(repo.new( attr ))
+    end
+
+    context "without errors" do
+
+      before(:each) { get 'edit', :id => @kata.id }
+
+      it "returns http success" do
+        response.should be_success
+      end
+
+      it "renders the correct template" do
+        assert_template :edit
+      end
+
+      it "assigns form_values with @kata attributes" do
+        form_values = { id:          @kata.id,
+                        title:       @kata.title,
+                        link:        @kata.link,
+                        description: @kata.description }
+        assigns( :form_values ).should == stringify_keys( form_values )
+      end
+
+      it "renders the form partial" do
+        response.should render_template( partial: '_form' )
+      end
+
+      it "assigns errors with an empty hash" do
+        assigns( :errors ).should be_a( Hash )
+      end
+
+    end
+
+    context "with errors" do
+
+      let(:attr) {{ title: "", link: "", description: "" }}
+      let(:errors) {{ title: "title error" }}
+
+      it "assigns form_values from parameters" do
+        get 'edit', { :id => @kata.id }, nil, { :form_values => attr }
+        assigns( :form_values ).should == stringify_keys( attr )
+      end
+
+      it "assigns errors" do
+        get 'edit', { :id => @kata.id }, nil, { :errors => errors }
+        assigns( :errors ).should == stringify_keys( errors )
+      end
+
+    end
+
+  end
+
   describe "POST 'create'" do
 
     context "with valid parameters" do
@@ -145,7 +204,7 @@ describe KatasController do
       it "creates a Kata instance" do
         lambda { post :create, attr }.
           should change( repo.records, :size ).by( 1 )
-        repo.records[1].title.should == "Example Title"
+        last_record( repo ).title.should == "Example Title"
       end
 
       it "assigns the Kata instance" do
@@ -163,7 +222,7 @@ describe KatasController do
     context "with invalid parameters" do
 
       let(:attr) {{ title: "", link: "", description: "" }}
-      let(:errors) {{ title: "test value" }}
+      let(:errors) {{ title: "title error" }}
 
       before(:each) do
         Dojo::KataValidator.stub!( :errors ).and_return( errors )
@@ -186,6 +245,73 @@ describe KatasController do
 
       it "sends a flash for errors through the redirect" do
         post :create, attr
+        flash[:errors].should == errors
+      end
+
+    end
+
+  end
+
+  describe "PUT 'update'" do
+
+    let(:uri) { "http://youtube.com/watch?v=0xtPlviSkxs" }
+    let(:attr) { base_attr.update( link: uri ) }
+
+    context "with valid parameters" do
+
+      before(:each) do
+        @kata = repo.save(repo.new( attr ))
+        @new_attr = attr.update({ id: @kata.id, title: "New Title" }) 
+      end
+
+      it "updates the Kata instance" do
+        lambda { put :update, @new_attr }.
+          should_not change( repo.records, :size )
+        last_record( repo ).title.should == "New Title"
+      end
+
+      it "assigns the Kata instance" do
+        post :update, @new_attr
+        assigns( :kata ).should == last_record( repo )
+      end
+
+      it "redirects to the kata show page upon success" do
+        post :update, @new_attr
+        response.should redirect_to(kata_path( assigns( :kata ).id ))
+      end
+
+    end
+
+    context "with invalid parameters" do
+
+      let(:errors) {{ title: "title error" }}
+
+      before(:each) do
+        @kata = repo.save(repo.new( attr ))
+        @new_attr = attr.update({ id: @kata.id, title: "", 
+                                  link: "", description: "" }) 
+        Dojo::KataValidator.stub!( :errors ).and_return( errors )
+      end
+
+      it "does not update the Kata instance" do
+        lambda { post :update, @new_attr }.
+          should_not change( repo.records, :size )
+        last_record( repo ).should == @kata
+      end
+
+      it "redirects to the new kata page for unknown host" do
+        post :update, @new_attr
+        response.should redirect_to( edit_kata_path( @kata.id ) )
+      end
+
+      it "sends a flash for form_values through the redirect" do
+        post :update, @new_attr
+        expected = Hash[@new_attr.map { |k,v| [k, v.to_s] }]
+        flash[:form_values].should == expected
+      end
+
+      it "sends a flash for errors through the redirect" do
+        post :update, @new_attr
         flash[:errors].should == errors
       end
 

@@ -1,0 +1,5 @@
+<h2>Edit this Kata</h2>
+
+<div class="basin_basic">
+  <%= render :partial => 'form', :locals => { :method => 'put', :action => ('/katas/' + @form_values[:id].to_s) } %>
+</div>

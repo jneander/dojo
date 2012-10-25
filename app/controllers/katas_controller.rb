@@ -20,6 +20,17 @@ class KatasController < ApplicationController
     render :new
   end
 
+  def edit
+    kata = repo.kata.find( params[:id] )
+    kata_values = { id:          kata.id,
+                    title:       kata.title,
+                    link:        kata.link,
+                    description: kata.description }
+    @form_values = flash[:form_values] || kata_values
+    @errors = flash[:errors] || {}
+    render :edit
+  end
+
   def create
     if Dojo::KataValidator.valid?( params )
       @kata = repo.kata.save(repo.kata.new( params ))
@@ -30,6 +41,21 @@ class KatasController < ApplicationController
         select { |k,v| fields.include? k }
       flash[:errors] = Dojo::KataValidator.errors( params )
       redirect_to new_kata_path
+    end
+  end
+
+  def update
+    if Dojo::KataValidator.valid?( params )
+      kata = repo.kata.new( params )
+      kata.id = params[:id].to_i
+      @kata = repo.kata.save( kata )
+      redirect_to kata_path( @kata.id )
+    else
+      fields = Dojo::Kata.attributes
+      flash[:form_values] = symbolize_keys( params ).
+        select { |k,v| fields.include? k }
+      flash[:errors] = Dojo::KataValidator.errors( params )
+      redirect_to edit_kata_path( params[:id] )
     end
   end
 
