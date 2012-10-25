@@ -44,10 +44,12 @@ class KatasController < ApplicationController
     Dojo::Repository
   end
 
-  def embed_partial_for(video)
+  def embed_partial_for( video )
     case video
     when Dojo::Media::VimeoVideo
       'vimeo'
+    when Dojo::Media::YouTubeVideo
+      'youtube'
     else
       'broken_embed'
     end
