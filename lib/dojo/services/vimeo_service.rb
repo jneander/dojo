@@ -3,12 +3,17 @@ require 'xmlsimple'
 
 module Dojo
   module Media
+
     class VimeoService
 
-      def self.embed(uri)
-        api_call = oembed(uri)
-        # should be smart enough to fail politely on 'no internet'
-        data = XmlSimple.xml_in(Net::HTTP.get_response(api_call).body)
+      def self.embed( uri )
+        api_call = oembed( uri )
+
+        begin
+          data = XmlSimple.xml_in( Net::HTTP.get_response( api_call ).body )
+        rescue ArgumentError
+          raise Dojo::Validation::MediaNotFoundError
+        end
 
         video = VimeoVideo.new
         video.title = data["title"].first
@@ -19,9 +24,9 @@ module Dojo
         return video
       end
 
-      def self.oembed(uri)
+      def self.oembed( uri )
         media_path = "https%3a//vimeo.com#{uri.path}"
-        URI.parse("http://vimeo.com/api/oembed.xml?url=#{media_path}")
+        URI.parse( "http://vimeo.com/api/oembed.xml?url=#{media_path}" )
       end
 
     end
@@ -29,5 +34,6 @@ module Dojo
     class VimeoVideo
       attr_accessor :title, :height, :width, :id
     end
+
   end
 end
