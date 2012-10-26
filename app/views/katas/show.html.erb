@@ -1,8 +1,14 @@
 <div class="kata_container">
-  <h2><%= @kata.title %></h2>
+
+  <div class="header">
+    <h2><%= @kata.title %></h2>
+    <span class="edit_link"><%= link_to "edit", edit_kata_path( @kata.id ) %></span>
+  </div>
+
   <div class="video_container">
     <%= render :partial => @partial %>
   </div>
+
   <div class="description">
     <p class="timestamp">Last updated on <%= timestamp(@kata.last_updated) %></p>
     <p class="description">
@@ -11,6 +17,7 @@
     <% end %>
     </p>
   </div>
+
 </div>
 
 <div class="kata_supplements">
@@ -34,8 +41,7 @@
         <%= text_area_tag :message, "", :placeholder => "Leave some feedback" %>
       </div>
       <div class="right">
-        <%= label_tag :author, "Your Name" %>
-        <%= text_field_tag :author %>
+        <%= text_field_tag :author, "", :placeholder => "What's your name?" %>
         <%= submit_tag "Submit", :class => 'btn sharp' %>
       </div>
     <% end %>

@@ -5,7 +5,17 @@
   margin: 0px auto;
 }
 
+.kata_container .header {
+  position: relative;
+}
+
 .kata_container h2 {
+}
+
+.kata_container span.edit_link {
+  position: absolute;
+  bottom: 3px;
+  right: 0;
 }
 
 .video_container {
