@@ -33,8 +33,8 @@ class KatasController < ApplicationController
 
   def create
     if Dojo::KataValidator.valid?( params )
-      @kata = repo.kata.save(repo.kata.new( params ))
-      redirect_to kata_path( @kata.id )
+      kata = repo.kata.save(repo.kata.new( params ))
+      redirect_to kata_path( kata.id )
     else
       fields = Dojo::Kata.attributes
       flash[:form_values] = symbolize_keys( params ).
@@ -48,8 +48,8 @@ class KatasController < ApplicationController
     if Dojo::KataValidator.valid?( params )
       kata = repo.kata.new( params )
       kata.id = params[:id].to_i
-      @kata = repo.kata.save( kata )
-      redirect_to kata_path( @kata.id )
+      kata = repo.kata.save( kata )
+      redirect_to kata_path( kata.id )
     else
       fields = Dojo::Kata.attributes
       flash[:form_values] = symbolize_keys( params ).

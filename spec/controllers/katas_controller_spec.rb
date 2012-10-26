@@ -207,14 +207,9 @@ describe KatasController do
         last_record( repo ).title.should == "Example Title"
       end
 
-      it "assigns the Kata instance" do
-        post :create, attr
-        assigns( :kata ).should == last_record( repo )
-      end
-
       it "redirects to the kata show page upon success" do
         post :create, attr
-        response.should redirect_to(kata_path( assigns( :kata ).id ))
+        response.should redirect_to(kata_path( last_record( repo ).id ))
       end
 
     end
@@ -270,14 +265,9 @@ describe KatasController do
         last_record( repo ).title.should == "New Title"
       end
 
-      it "assigns the Kata instance" do
-        post :update, @new_attr
-        assigns( :kata ).should == last_record( repo )
-      end
-
       it "redirects to the kata show page upon success" do
         post :update, @new_attr
-        response.should redirect_to(kata_path( assigns( :kata ).id ))
+        response.should redirect_to(kata_path( last_record( repo ).id ))
       end
 
     end
