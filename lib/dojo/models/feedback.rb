@@ -9,5 +9,9 @@ module Dojo
       @message = attributes[:message]
     end
 
+    def self.attributes
+      [:id, :kata_id, :author, :message]
+    end
+
   end
 end

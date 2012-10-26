@@ -26,4 +26,8 @@ describe Dojo::Feedback do
     feedback.created_on.should be_instance_of(DateTime)
   end
 
+  it "::attributes returns a list of alterable attributes" do
+    Dojo::Feedback.attributes.should == [:id, :kata_id, :author, :message]
+  end
+
 end
