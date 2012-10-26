@@ -5,7 +5,11 @@
   </div>
   <div class="description">
     <p class="timestamp">Last updated on <%= timestamp(@kata.last_updated) %></p>
-    <p class="description"><%= @kata.description %></p>
+    <p class="description">
+    <% @kata.description.split( /\r\n|\n/ ).each do |section| %>
+      <%= section %><br/>
+    <% end %>
+    </p>
   </div>
 </div>
 
