@@ -1,38 +1,5 @@
 <h2>Create a Kata</h1>
 
 <div class="kata_form">
-  <%= form_tag '/katas', :class => "kata_new_form" do %>
-    <div class='control-group'>
-      <%= label_tag :title, "Title", :class => 'control-label' %>
-      <div class='controls'>
-        <%= text_field_tag :title, @form_values[:title],
-          form_error_highlights(:title, @errors) %>
-          <%= f_error_message(@errors[:title]) %>
-      </div>
-    </div>
-
-    <div class='control-group'>
-      <%= label_tag :link, "Link", :class => 'control-label' %>
-      <div class='controls'>
-        <%= text_field_tag :link, @form_values[:link],
-          form_error_highlights(:link, @errors) %>
-          <%= f_error_message(@errors[:link]) %>
-      </div>
-    </div>
-
-    <div class='control-group'>
-      <%= label_tag :description, "Description", :class => 'control-label' %>
-      <div class='controls'>
-        <%= text_area_tag :description, @form_values[:description],
-          form_error_highlights(:description, @errors, {:rows => 4}) %>
-          <%= f_error_message(@errors[:description]) %>
-      </div>
-    </div>
-
-    <div class='control-group'>
-      <div class='controls'>
-        <%= submit_tag "Submit", :class => 'btn' %>
-      </div>
-    </div>
-  <% end %>
+  <%= render :partial => 'form', :locals => { :method => 'post', :action => '/katas/' } %>
 </div>

@@ -70,16 +70,12 @@
   margin-top: $std-space;
 }
 
-.kata_new_form {
-  margin-top: $std-space;
-}
-
-.kata_new_form .controls {
+.kata_form .controls {
   margin-left: 180px;
 }
 
-.kata_new_form input[type="text"], 
-.kata_new_form textarea,
+.kata_form input[type="text"], 
+.kata_form textarea,
 .kata_form .error_message {
   width: 356px;
   max-width: 356px;
