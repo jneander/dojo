@@ -12,6 +12,8 @@ class KatasController < ApplicationController
     uri = URI.parse( @kata.link )
     @video = Dojo::MediaService.embed( uri )
     @partial = embed_partial_for( @video )
+    @form_values = flash[:form_values] || {}
+    @errors = flash[:errors] || {}
   end
 
   def new

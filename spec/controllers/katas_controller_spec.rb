@@ -32,13 +32,34 @@ describe KatasController do
       assigns( :kata ).should equal @kata
     end
 
-    it "assigns the @kata's Feedback instances" do
-      fbrepo = Dojo::Repository.feedback
-      feedback = [fbrepo.save( fbrepo.new )]
-      Dojo::Repository.feedback.stub!( :find_by_kata_id ).
-        and_return( feedback )
-      get 'show', :id => @kata.id
-      assigns( :feedback ).should == feedback
+    context "with Feedback" do
+
+      it "assigns the @kata's Feedback instances" do
+        fbrepo = Dojo::Repository.feedback
+        feedback = [fbrepo.save( fbrepo.new )]
+        Dojo::Repository.feedback.stub!( :find_by_kata_id ).
+          and_return( feedback )
+        get 'show', :id => @kata.id
+        assigns( :feedback ).should == feedback
+      end
+
+      it "assigns no errors or form_values for new form" do
+        get 'show', :id => @kata.id
+        assigns( :form_values ).should == {}
+        assigns( :errors ).should == {}
+      end
+
+      it "assigns values if errors exist" do
+        get 'show', { :id => @kata.id }, nil, { :form_values => attr }
+        assigns( :form_values ).should == stringify_keys( attr )
+      end
+
+      it "assigns errors when present" do
+        errors = { author: "author error" }
+        get 'show', { :id => @kata.id }, nil, { :errors => errors }
+        assigns( :errors ).should == stringify_keys( errors )
+      end
+
     end
 
     context "using VimeoService" do
