@@ -1,45 +1,41 @@
 // == KATA == //
 
+@import "values";
+
 .kata_container {
   @extend .max_width;
-  margin: 0px auto;
+  @extend .centered;
 }
+
+
+/* HEADER */
 
 .kata_container .header {
   position: relative;
 }
 
-.kata_container h2 {
+.kata_container .header h2 {
 }
 
-.kata_container span.edit_link {
+.kata_container .header span.edit_link {
   position: absolute;
   bottom: 3px;
   right: 0;
 }
 
+
+/* EMBED */
+
 .video_container {
+  padding-top: $std-space;
+  width: $std-width;
+  @extend .centered;
+}
+
+.video_container iframe,
+.video_container #embed_broken {
   width: 720px;
-  margin: 0px auto;
-}
-
-.kata_container div.description {
-  @extend .basin;
-  padding: 20px;
-  margin: 20px 0 0 0;
-}
-
-.kata_supplements {
-  margin-top: 20px;
-}
-
-.kata_new_form {
-  @extend .form-horizontal;
-}
-
-.kata_new_form input[type="text"], 
-.kata_new_form textarea {
-  @extend .span4;
+  height: 405px;
 }
 
 #embed_broken {
@@ -47,6 +43,44 @@
   vertical-align: middle;
   text-align: center;
   display: table-cell;
-  width: 720px;
-  height: 405px;
+}
+
+
+/* DESCRIPTION */
+
+.kata_container div.description {
+  @extend .basin;
+  padding: 20px;
+  margin: $dbl-space 0 0 0;
+}
+
+
+/* SUPPLEMENTS */
+
+.kata_supplements {
+  margin-top: $dbl-space;
+}
+
+
+// NEW KATA //
+
+.kata_form {
+  @extend .basin;
+  padding: $dbl-space;
+  margin-top: $std-space;
+}
+
+.kata_new_form {
+  margin-top: $std-space;
+}
+
+.kata_new_form .controls {
+  margin-left: 180px;
+}
+
+.kata_new_form input[type="text"], 
+.kata_new_form textarea,
+.kata_form .error_message {
+  width: 356px;
+  max-width: 356px;
 }

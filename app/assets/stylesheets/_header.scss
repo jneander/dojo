@@ -1,7 +1,9 @@
 /* HEADER */
 
+@import "values";
+
 #header {
-  padding: 10px 0px;
+  padding: $std-space 0;
   background-color: #DDD;
   border-bottom: 1px solid #BBB;
 }
@@ -28,5 +30,5 @@
 
 #quicklinks {
   float: right;
-  margin: 0px 0;
+  margin: 0;
 }

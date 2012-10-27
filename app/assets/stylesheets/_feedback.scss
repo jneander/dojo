@@ -1,25 +1,29 @@
 // == FEEDBACK == //
 
+@import "values";
+
 .feedback_stream {
   @extend .basin;
-  margin: 0 0 20px 0;
+  margin: 0 0 $dbl-space 0;
 }
 
 .feedback_container + .feedback_container {
-  border-top: 1px solid #DDD;
+  border-top: 1px solid $mid-border-color;
 }
 
 .feedback_container {
-  background-color: whiteSmoke;
-  padding: 20px;
+  background-color: $mid-bg-color;
+  padding: $dbl-space;
   margin: 0;
 }
 
-// == FORMS == //
+
+/* FORM */
 
 .feedback_form {
   @extend .basin;
-  padding: 20px;
+  padding: $dbl-space;
+  margin-top: $std-space;
   overflow: hidden;
 }
 
@@ -30,7 +34,7 @@
 
 .feedback_form .right {
   width: 286px;
-  margin-left: 20px;
+  margin-left: $dbl-space;
   float: left;
 }
 
@@ -39,6 +43,15 @@
   height: 100px;
 }
 
-.feedback_form .right input[type="text"] {
+.feedback_form .left .error_message {
+  width: 346px;
+}
+
+.feedback_form .right input[type="text"],
+.feedback_form .right .error_message {
   width: 286px;
+}
+
+.feedback_form input[type="submit"] {
+  margin-top: 10px;
 }

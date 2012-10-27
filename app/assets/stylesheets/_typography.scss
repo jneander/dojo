@@ -1,4 +1,7 @@
 // == TYPOGRAPHY == //
+
+@import "values";
+
 @font-face {
   font-family: 'PrimaryFontRegular';
   src: url('quadrat_serial-regular.eot');
@@ -9,3 +12,31 @@
   font-weight: normal;
   font-style: normal;
 }
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: inherit;
+  text-rendering: optimizelegibility;
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 40px;
+}
+
+h2 {
+  font-size: 30px;
+  line-height: 40px;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 40px;
+}
+
+p { margin: $std-space 0 0 0; }

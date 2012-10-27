@@ -1,50 +1,79 @@
 // == STRUCTURES == //
 
+@import "values";
+
+/* BASE HTML */
+
+html { font-size: 100%; }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  line-height: $std-line-height;
+  background-color: white;
+}
+
+
 /* ALIGNMENT */
+
+.max_width { width: $std-width; }
+
+.centered { margin: 0 auto; }
 
 #main {
   @extend .centered;
   @extend .max_width;
-  padding: 20px 0;
+  padding: $dbl-space 0;
 }
 
-.sharp {
-  -webkit-border-radius: 0px;
-  border-radius: 0px;
-}
-
-.max_width {
-  width: 720px;
-}
-
-.centered {
-  margin: 0 auto;
-}
 
 /* BASIN */
 
 .basin {
   min-height: 20px;
   padding: 0;
-  margin-bottom: 20px;
+  margin-bottom: $dbl-space;
   background-color: whiteSmoke;
-  border: 1px solid #E3E3E3;
+  border: 1px solid $mid-border-color;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-.basin_basic {
-  @extend .basin;
-  padding: 20px;
+
+/* TABLE */
+
+table {
+  max-width: 100%;
+  width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-.basin_outer {
-  padding: 0 1px 1px 0;
-  box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  border: 1px 0 0 1px solid #DDD;
+.table thead th { vertical-align: bottom; }
+
+.table th,
+.table td {
+  padding: 4px 5px;
+  line-height: $std-line-height;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid $mid-border-color;
 }
+
+.table tbody tr:nth-child(odd) td,
+.table tbody tr:nth-child(odd) th {
+  background-color: $mid-bg-color;
+}
+
 
 /* CORRECTIONS */
 
