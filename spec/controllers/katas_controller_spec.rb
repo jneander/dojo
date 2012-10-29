@@ -348,6 +348,14 @@ describe KatasController do
 
   describe "GET 'index'" do
 
+    before do
+      repo.kata.destroy_all
+      @user = repo.user.save( repo.user.new( {} ))
+      session[:user_id] = @user.id
+      repo.kata.save( repo.kata.new( user: @user.id ))
+      repo.kata.save( repo.kata.new( user: @user.id ))
+    end
+
     it "returns http success" do
       get 'index'
       response.should be_success
@@ -361,6 +369,14 @@ describe KatasController do
     it "assigns the katas from the repository" do
       get 'index'
       assigns( :katas ).should == repo.kata.records.values.reverse
+    end
+
+    it "assigns each Kata User to its Kata" do
+      get 'index'
+      assigns( :katas ).each do |kata|
+        kata.user.should be_a( Dojo::User )
+        kata.user.id.should == @user.id
+      end
     end
 
   end

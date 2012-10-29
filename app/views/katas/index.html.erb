@@ -4,8 +4,8 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Description</th>
-      <th>Last Updated</th>
+      <th>Author</th>
+      <th>Last Update</th>
     </tr>
   </thead>
 
@@ -14,7 +14,7 @@
     <% @katas.each do |kata| %>
       <tr data-href='<%= kata_path(kata.id) %>'>
         <td><%= kata.title %></td>
-        <td><%= kata.description %></td>
+        <td><%= kata.user.name %></td>
         <td><%= datetime_to_date_and_time(kata.last_updated) %></td>
       </tr>
     <% end %>

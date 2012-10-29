@@ -65,6 +65,7 @@ class KatasController < ApplicationController
 
   def index
     @katas = repo.kata.sort
+    @katas.map { |kata| kata.user = repo.user.records[ kata.user ] }
     render :index
   end
 
