@@ -1,3 +1,5 @@
+require 'dojo/repository'
+
 class AuthController < ApplicationController
 
   def create
