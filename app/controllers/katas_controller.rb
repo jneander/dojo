@@ -7,7 +7,8 @@ require 'uri'
 class KatasController < ApplicationController
 
   def show
-    @kata = repo.kata.find( params[:id] )
+    @kata = repo.kata.find( params[:id] ).clone
+    @kata.user = repo.user.find( @kata.user )
     @feedback = repo.feedback.find_by_kata_id( params[:id] )
     uri = URI.parse( @kata.link )
     @video = Dojo::MediaService.embed( uri )
@@ -35,6 +36,7 @@ class KatasController < ApplicationController
 
   def create
     if Dojo::KataValidator.valid?( params )
+      params.update( user: session[:user_id] )
       kata = repo.kata.save(repo.kata.new( params ))
       redirect_to kata_path( kata.id )
     else

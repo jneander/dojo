@@ -10,11 +10,12 @@
   </div>
 
   <div class="description">
-    <p class="timestamp">Last updated on <%= timestamp(@kata.last_updated) %></p>
     <p class="description">
     <% @kata.description.split( /\r\n|\n/ ).each do |section| %>
       <%= section %><br/>
     <% end %>
+    <p class="author">Created by <%= @kata.user.name %></p>
+    <p class="timestamp">Last updated on <%= timestamp(@kata.last_updated) %></p>
     </p>
   </div>
 

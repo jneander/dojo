@@ -5,7 +5,7 @@ require 'spec_helper'
 describe KatasController do
   render_views
 
-  let(:repo) { Dojo::Repository.kata }
+  let(:repo) { Dojo::Repository }
   let(:base_attr) {{ title:       "Example Title",
                      description: "Example Description" }}
 
@@ -14,7 +14,9 @@ describe KatasController do
     let(:attr) { base_attr.update({ link: "http://google.com" }) }
 
     before(:each) do
-      @kata = repo.save(repo.new( attr ))
+      @user = repo.user.save( repo.user.new({}))
+      session[:user_id] = @user.id
+      @kata = repo.kata.save(repo.kata.new( attr.update( user: @user.id ) ))
     end
 
     it "returns http success" do
@@ -29,7 +31,14 @@ describe KatasController do
 
     it "assigns the @kata instance" do
       get 'show', :id => @kata.id
-      assigns( :kata ).should equal @kata
+      assigns( :kata ).should be_a( Dojo::Kata )
+      assigns( :kata ).id.should == @kata.id
+    end
+
+    it "assigns the Kata User creator within the Kata instance" do
+      get 'show', :id => @kata.id
+      assigns( :kata ).user.should be_a( Dojo::User )
+      assigns( :kata ).user.id.should == @user.id
     end
 
     context "with Feedback" do
@@ -70,7 +79,7 @@ describe KatasController do
 
       before(:each) do 
         @video = example_vimeo_video
-        @kata = repo.save(repo.new( attr ))
+        @kata = repo.kata.save(repo.kata.new( attr ))
       end
 
       it "assigns a VimeoService embed" do
@@ -101,7 +110,7 @@ describe KatasController do
 
       before(:each) do
         @video = example_youtube_video
-        @kata = repo.save(repo.new( attr ))
+        @kata = repo.kata.save(repo.kata.new( attr ))
       end
 
       it "assigns a YouTubeService embed" do
@@ -163,7 +172,7 @@ describe KatasController do
 
     before(:all) do
       attr = base_attr.update({ link: "http://google.com" })
-      @kata = repo.save(repo.new( attr ))
+      @kata = repo.kata.save(repo.kata.new( attr ))
     end
 
     context "without errors" do
@@ -224,13 +233,20 @@ describe KatasController do
 
       it "creates a Kata instance" do
         lambda { post :create, attr }.
-          should change( repo.records, :size ).by( 1 )
-        last_record( repo ).title.should == "Example Title"
+          should change( repo.kata.records, :size ).by( 1 )
+        last_record( repo.kata ).title.should == "Example Title"
+      end
+
+      it "assigns the current User" do
+        repo.user.save( repo.user.new( id: 123 ))
+        session[:user_id] = 123
+        post :create, attr
+        last_record( repo.kata ).user.should == 123
       end
 
       it "redirects to the kata show page upon success" do
         post :create, attr
-        response.should redirect_to(kata_path( last_record( repo ).id ))
+        response.should redirect_to(kata_path( last_record( repo.kata ).id ))
       end
 
     end
@@ -246,7 +262,7 @@ describe KatasController do
 
       it "does not create a Kata instance" do
         lambda { post :create, attr }.
-          should_not change( repo.records, :size )
+          should_not change( repo.kata.records, :size )
       end
 
       it "redirects to the new kata page for unknown host" do
@@ -276,19 +292,19 @@ describe KatasController do
     context "with valid parameters" do
 
       before(:each) do
-        @kata = repo.save(repo.new( attr ))
+        @kata = repo.kata.save(repo.kata.new( attr ))
         @new_attr = attr.update({ id: @kata.id, title: "New Title" }) 
       end
 
       it "updates the Kata instance" do
         lambda { put :update, @new_attr }.
-          should_not change( repo.records, :size )
-        last_record( repo ).title.should == "New Title"
+          should_not change( repo.kata.records, :size )
+        last_record( repo.kata ).title.should == "New Title"
       end
 
       it "redirects to the kata show page upon success" do
         post :update, @new_attr
-        response.should redirect_to(kata_path( last_record( repo ).id ))
+        response.should redirect_to(kata_path( last_record( repo.kata ).id ))
       end
 
     end
@@ -298,7 +314,7 @@ describe KatasController do
       let(:errors) {{ title: "title error" }}
 
       before(:each) do
-        @kata = repo.save(repo.new( attr ))
+        @kata = repo.kata.save(repo.kata.new( attr ))
         @new_attr = attr.update({ id: @kata.id, title: "", 
                                   link: "", description: "" }) 
         Dojo::KataValidator.stub!( :errors ).and_return( errors )
@@ -306,8 +322,8 @@ describe KatasController do
 
       it "does not update the Kata instance" do
         lambda { post :update, @new_attr }.
-          should_not change( repo.records, :size )
-        last_record( repo ).should == @kata
+          should_not change( repo.kata.records, :size )
+        last_record( repo.kata ).should == @kata
       end
 
       it "redirects to the new kata page for unknown host" do
@@ -344,7 +360,7 @@ describe KatasController do
 
     it "assigns the katas from the repository" do
       get 'index'
-      assigns( :katas ).should == repo.records.values.reverse
+      assigns( :katas ).should == repo.kata.records.values.reverse
     end
 
   end
