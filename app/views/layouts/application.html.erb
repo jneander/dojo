@@ -12,7 +12,14 @@
       <div class="inner">
         <h1 id="logo"><%= link_to "DOJO", root_url %></h1>
         <div id="quicklinks">
-          <%= link_to "Create a Kata", new_kata_url, {:class => "btn sharp"} %>
+          <% if current_user %>
+            <span>Greetings, <%= current_user.name %>!</span>
+            <%= link_to "Create a Kata", new_kata_url, {:class => "btn"} %>
+            <%= link_to "Sign out", "/signout", {:class => "btn"} %>
+          <% else %>
+            <span>Greetings, guest!</span>
+            <%= link_to "Sign in", "/auth/google_oauth2/", {:class => "btn"} %>
+          <% end %>
         </div>
       </div>
     </div>
