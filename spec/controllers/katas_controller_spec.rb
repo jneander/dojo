@@ -43,13 +43,16 @@ describe KatasController do
 
     context "with Feedback" do
 
+      before do
+        base_feedback = repo.feedback.new({ user: @user.id,
+                                            kata_id: @kata.id })
+        @feedback = [ repo.feedback.save( base_feedback ),
+                      repo.feedback.save( base_feedback ) ]
+      end
+
       it "assigns the @kata's Feedback instances" do
-        fbrepo = Dojo::Repository.feedback
-        feedback = [fbrepo.save( fbrepo.new )]
-        Dojo::Repository.feedback.stub!( :find_by_kata_id ).
-          and_return( feedback )
         get 'show', :id => @kata.id
-        assigns( :feedback ).should == feedback
+        assigns( :feedback ).should == @feedback
       end
 
       it "assigns no errors or form_values for new form" do

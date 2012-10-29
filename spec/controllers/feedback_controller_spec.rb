@@ -4,23 +4,36 @@ require 'spec_helper'
 describe FeedbackController do
   render_views
 
-  let(:repo) { Dojo::Repository.feedback }
-  let(:attr) {{ author:   "Jeremy",
-                kata_id:  1,
+  let(:repo) { Dojo::Repository }
+  let(:attr) {{ kata_id:  1,
                 message:  "Good job!" }}
 
   describe "POST 'create'" do
+
+    before do
+      @user = repo.user.save( repo.user.new( id: 123 ))
+      session[:user_id] = 123
+    end
+
+    context "with valid parameters" do
     
-    it "with valid parameters creates a Feedback instance" do
-      lambda { post :create, attr }.
-        should change(repo.records, :size).by(1)
-      last_record(repo).author.should == "Jeremy"
+      it "creates a Feedback instance" do
+        lambda { post :create, attr }.
+          should change( repo.feedback.records, :size ).by( 1 )
+        last_record( repo.feedback ).kata_id.should == 1
+      end
+
+      it "stores the current User" do
+        post :create, attr
+        last_record( repo.feedback ).user.should == 123
+      end
+
     end
 
     context "with invalid parameters" do
 
-      let(:attr) {{ author: "", kata_id: 1, message: "" }}
-      let(:errors) {{ author: "author error" }}
+      let(:attr) {{ kata_id: 1, message: "" }}
+      let(:errors) {{ message: "message error" }}
 
       before(:each) do
         Dojo::FeedbackValidator.stub!( :errors ).and_return( errors )
@@ -28,7 +41,7 @@ describe FeedbackController do
 
       it "does not create a Feedback instance" do
         lambda { post :create, attr }.
-          should_not change( repo.records, :size )
+          should_not change( repo.feedback.records, :size )
       end
 
       it "redirects to the kata show page" do
@@ -38,7 +51,7 @@ describe FeedbackController do
 
       it "sends a flash for form_values through the redirect" do
         post :create, attr
-        expected = Hash[attr.map { |k,v| [k, v.to_s] }]
+        expected = attr.merge( kata_id: "1" )
         flash[:form_values].should == expected
       end
 

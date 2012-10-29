@@ -6,9 +6,10 @@ class FeedbackController < ApplicationController
 
   def create
     kata_id = params[:kata_id]
+    with_user = params.merge( user: session[:user_id] )
 
-    if Dojo::FeedbackValidator.valid?( params )
-      create_feedback( params )
+    if Dojo::FeedbackValidator.valid?( with_user )
+      create_feedback( with_user )
     else
       fields = Dojo::Feedback.attributes
       flash[:form_values] = symbolize_keys( params ).
