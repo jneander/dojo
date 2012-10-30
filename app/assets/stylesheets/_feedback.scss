@@ -38,20 +38,16 @@
   float: left;
 }
 
-.feedback_form .left textarea {
-  width: 346px;
+.feedback_form textarea {
+  width: 664px;
   height: 100px;
 }
 
-.feedback_form .left .error_message {
-  width: 346px;
-}
-
-.feedback_form .right input[type="text"],
-.feedback_form .right .error_message {
-  width: 286px;
+.feedback_form .error_message {
+  width: 664px;
 }
 
 .feedback_form input[type="submit"] {
+  float: right;
   margin-top: 10px;
 }
