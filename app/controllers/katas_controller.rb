@@ -13,6 +13,7 @@ class KatasController < ApplicationController
     feedback = repo.feedback.find_by_kata_id( params[:id] )
     @feedback = feedback.map { |fb| Dojo::FeedbackPresenter.new( fb ) }
     uri = URI.parse( @kata.link )
+    @editable = ( kata.user == session[:user_id] )
     @video = Dojo::MediaService.embed( uri )
     @partial = embed_partial_for( @video )
     @form_values = flash[:form_values] || {}

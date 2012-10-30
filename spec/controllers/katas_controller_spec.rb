@@ -35,6 +35,17 @@ describe KatasController do
       assigns( :kata ).title.should == @kata.title
     end
 
+    it "assigns :editable to true if current user is creator" do
+      get 'show', :id => @kata.id
+      assigns( :editable ).should be_true
+    end
+
+    it "assigns :editable to false if current user is not creator" do
+      session[:user_id] = 123456789
+      get 'show', :id => @kata.id
+      assigns( :editable ).should be_false
+    end
+
     context "with Feedback" do
 
       before do

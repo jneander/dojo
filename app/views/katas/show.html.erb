@@ -2,7 +2,9 @@
 
   <div class="header">
     <h2><%= @kata.title %></h2>
-    <span class="edit_link"><%= link_to "edit", edit_kata_path( @kata.id ) %></span>
+    <% if @editable %>
+      <span class="edit_link"><%= link_to "edit", edit_kata_path( @kata.id ) %></span>
+    <% end %>
   </div>
 
   <div class="video_container">
