@@ -29,30 +29,27 @@ describe KatasController do
       assert_template :show
     end
 
-    it "assigns the @kata instance" do
+    it "assigns a KataPresenter for this Kata" do
       get 'show', :id => @kata.id
-      assigns( :kata ).should be_a( Dojo::Kata )
-      assigns( :kata ).id.should == @kata.id
-    end
-
-    it "assigns the Kata User creator within the Kata instance" do
-      get 'show', :id => @kata.id
-      assigns( :kata ).user.should be_a( Dojo::User )
-      assigns( :kata ).user.id.should == @user.id
+      assigns( :kata ).should be_a( Dojo::KataPresenter )
+      assigns( :kata ).title.should == @kata.title
     end
 
     context "with Feedback" do
 
       before do
-        base_feedback = repo.feedback.new({ user: @user.id,
-                                            kata_id: @kata.id })
-        @feedback = [ repo.feedback.save( base_feedback ),
-                      repo.feedback.save( base_feedback ) ]
+        repo.feedback.save( repo.feedback.new(
+          { user: @user.id, kata_id: @kata.id, message: "One" }))
+        repo.feedback.save( repo.feedback.new(
+          { user: @user.id, kata_id: @kata.id, message: "Two" }))
       end
 
-      it "assigns the @kata's Feedback instances" do
+      it "assigns an array of FeedbackPresenters for this Kata" do
         get 'show', :id => @kata.id
-        assigns( :feedback ).should == @feedback
+        feedback = assigns( :feedback )
+        feedback.should be_a( Array )
+        feedback.first.should be_a( Dojo::FeedbackPresenter )
+        feedback.map { |fb| fb.message }.should == [ "One", "Two" ]
       end
 
       it "assigns no errors or form_values for new form" do
@@ -67,7 +64,7 @@ describe KatasController do
       end
 
       it "assigns errors when present" do
-        errors = { author: "author error" }
+        errors = { message: "message error" }
         get 'show', { :id => @kata.id }, nil, { :errors => errors }
         assigns( :errors ).should == stringify_keys( errors )
       end
@@ -355,8 +352,8 @@ describe KatasController do
       repo.kata.destroy_all
       @user = repo.user.save( repo.user.new( {} ))
       session[:user_id] = @user.id
-      repo.kata.save( repo.kata.new( user: @user.id ))
-      repo.kata.save( repo.kata.new( user: @user.id ))
+      repo.kata.save( repo.kata.new({ user: @user.id, title: "One" }))
+      repo.kata.save( repo.kata.new({ user: @user.id, title: "Two" }))
     end
 
     it "returns http success" do
@@ -369,17 +366,12 @@ describe KatasController do
       assert_template :index
     end
 
-    it "assigns the katas from the repository" do
+    it "assigns KataPresenters for the Katas" do
       get 'index'
-      assigns( :katas ).should == repo.kata.records.values.reverse
-    end
-
-    it "assigns each Kata User to its Kata" do
-      get 'index'
-      assigns( :katas ).each do |kata|
-        kata.user.should be_a( Dojo::User )
-        kata.user.id.should == @user.id
-      end
+      katas = assigns( :katas )
+      katas.size.should == 2
+      katas.first.should be_a( Dojo::KataPresenter )
+      katas.map { |kata| kata.title }.should == [ "Two", "One" ]
     end
 
   end

@@ -14,22 +14,22 @@
     <% @kata.description.split( /\r\n|\n/ ).each do |section| %>
       <%= section %><br/>
     <% end %>
-    <p class="author">Created by <%= @kata.user.name %></p>
-    <p class="timestamp">Last updated on <%= timestamp(@kata.last_updated) %></p>
+    <p class="user">Created by <%= @kata.user_name %></p>
+    <p class="timestamp">Last updated on <%= timestamp( @kata.updated_at ) %></p>
     </p>
   </div>
 
 </div>
 
 <div class="kata_supplements">
-  <h3><%= feedback_header(@feedback.size) %></h3>
-  <% if (@feedback.size > 0) %>
+  <h3><%= feedback_header( @feedback.size ) %></h3>
+  <% if ( @feedback.size > 0 ) %>
     <div class="feedback_stream">
       <% @feedback.each do |feedback| %>
         <div class="feedback_container">
           <p class="message"><%= feedback.message %></p>
-          <small class="timestamp">Submitted by <%= feedback.author %>
-            on <%= timestamp(feedback.created_on) %></small>
+          <p class="timestamp">Submitted by <%= feedback.user_name %>
+            on <%= timestamp( feedback.created_at ) %></p>
         </div>
       <% end %>
     </div>
@@ -38,15 +38,10 @@
   <div class="feedback_form">
     <%= form_tag '/feedback', :class => 'form' do %>
       <%= hidden_field_tag :kata_id, @kata.id %>
-      <div class="left">
-        <%= text_area_tag :message, "", form_error_highlights( :message, @errors, :placeholder => "Leave some feedback" ) %>
-        <%= f_error_message( @errors[:message] ) %>
-      </div>
-      <div class="right">
-        <%= text_field_tag :author, "", form_error_highlights( :author, @errors, :placeholder => "What's your name?" ) %>
-        <%= f_error_message( @errors[:author] ) %>
-        <%= submit_tag "Submit", :class => 'btn sharp' %>
-      </div>
+      <%= text_area_tag :message, "", form_error_highlights( :message, @errors, :placeholder => "Leave some feedback" ) %>
+      <%= f_error_message( @errors[:message] ) %>
+      <%= submit_tag "Submit", :class => 'btn' %>
     <% end %>
   </div>
+
 </div>

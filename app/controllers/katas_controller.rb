@@ -1,4 +1,5 @@
 require 'dojo/repository'
+require 'dojo/presenters/kata_presenter'
 require 'dojo/validation/kata_validator'
 require 'dojo/services/media_service'
 require 'dojo/services/vimeo_service'
@@ -7,9 +8,10 @@ require 'uri'
 class KatasController < ApplicationController
 
   def show
-    @kata = repo.kata.find( params[:id] ).clone
-    @kata.user = repo.user.find( @kata.user )
-    @feedback = repo.feedback.find_by_kata_id( params[:id] )
+    kata = repo.kata.find( params[:id] )
+    @kata = Dojo::KataPresenter.new( kata )
+    feedback = repo.feedback.find_by_kata_id( params[:id] )
+    @feedback = feedback.map { |fb| Dojo::FeedbackPresenter.new( fb ) }
     uri = URI.parse( @kata.link )
     @video = Dojo::MediaService.embed( uri )
     @partial = embed_partial_for( @video )
@@ -64,8 +66,8 @@ class KatasController < ApplicationController
   end
 
   def index
-    @katas = repo.kata.sort
-    @katas.map { |kata| kata.user = repo.user.records[ kata.user ] }
+    katas = repo.kata.sort
+    @katas = katas.map { |kata| Dojo::KataPresenter.new( kata ) }
     render :index
   end
 
