@@ -1,4 +1,4 @@
-require 'dojo/repository'
+require 'dojo/repositories/repository'
 require 'dojo/presenters/feedback_presenter'
 
 describe Dojo::FeedbackPresenter do

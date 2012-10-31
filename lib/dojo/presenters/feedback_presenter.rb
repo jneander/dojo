@@ -1,4 +1,4 @@
-require 'dojo/repository'
+require 'dojo/repositories/repository'
 
 module Dojo
 

@@ -1,5 +1,5 @@
 require 'dojo/presenters/feedback_presenter'
-require 'dojo/repository'
+require 'dojo/repositories/repository'
 
 module Dojo
 

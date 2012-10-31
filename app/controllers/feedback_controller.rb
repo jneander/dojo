@@ -1,5 +1,5 @@
 require 'dojo/models/feedback'
-require 'dojo/repository'
+require 'dojo/repositories/repository'
 require 'dojo/validation/feedback_validator'
 
 class FeedbackController < AuthorizedController

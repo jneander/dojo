@@ -1,4 +1,4 @@
-require 'dojo/repository'
+require 'dojo/repositories/repository'
 require 'dojo/presenters/kata_presenter'
 require 'dojo/validation/kata_validator'
 require 'dojo/services/media_service'
