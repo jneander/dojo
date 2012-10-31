@@ -1,24 +1,20 @@
 require 'spec_helper'
 
 describe AuthController do
+  render_views
 
   let(:repo) { Dojo::Repository.user }
-  let(:attr) {{ name:     "John Doe",
-                email:    "foo@bar.com",
-                uid:      "1234567890",
-                provider: :google_oauth2 }}
-  let(:auth_hash) {{ uid:         attr[:uid],
-                     provider:    attr[:provider],
-                     info:        { name:   attr[:name],
-                                    email:  attr[:email] } }}
+  let(:attr) {{ name: "John Doe", email: "example@8thlight.com",
+                uid: "1234567890", provider: :google_oauth2 }}
 
   let(:create_with_google) { post 'create', provider: :google_oauth2 }
 
+  it "inherits directly from AuthorizedController" do
+    AuthController.ancestors[1].should equal AuthorizedController
+  end
+
   before do
-    OmniAuth.config.test_mode = true
-    OmniAuth.config.mock_auth[:google_oauth2] = 
-      OmniAuth::AuthHash.new( auth_hash )
-    request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
+    with_oauth_response( attr )
   end
 
   before(:each) do
@@ -57,14 +53,14 @@ describe AuthController do
           should change( repo.records, :size ).by( 1 )
       end
 
-      it "assigns user attributes" do
+      it "saves user attributes" do
         create_with_google
 
         user = last_record( repo )
-        user.name.should      == auth_hash[:info][:name]
-        user.email.should     == auth_hash[:info][:email]
-        user.uid.should       == auth_hash[:uid]
-        user.provider.should  == auth_hash[:provider]
+        user.name.should      == attr[:name]
+        user.email.should     == attr[:email]
+        user.uid.should       == attr[:uid]
+        user.provider.should  == attr[:provider]
       end
 
       it "stores the User id in the session" do
@@ -83,15 +79,22 @@ describe AuthController do
 
   describe "DELETE 'destroy'" do
 
-    it "removes the User id from the session" do
+    before(:each) do
+      with_oauth_response( attr )
       session[:user_id] = "1234567890"
       delete 'destroy'
+    end
+
+    it "returns http success" do
+      response.should be_success
+    end
+
+    it "removes the User id from the session" do
       session[:user_id].should be_nil
     end
 
-    it "redirects to the Kata index" do
-      delete 'destroy'
-      response.should redirect_to( katas_path )
+    it "renders the signout template" do
+      assert_template :signout
     end
 
   end

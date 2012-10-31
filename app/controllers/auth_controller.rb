@@ -1,6 +1,6 @@
 require 'dojo/repository'
 
-class AuthController < ApplicationController
+class AuthController < AuthorizedController
 
   def create
     auth_hash = request.env['omniauth.auth']
@@ -12,7 +12,7 @@ class AuthController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    redirect_to katas_path
+    render :signout
   end
 
   private
