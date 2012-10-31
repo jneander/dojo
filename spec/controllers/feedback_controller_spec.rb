@@ -8,6 +8,14 @@ describe FeedbackController do
   let(:attr) {{ kata_id:  1,
                 message:  "Good job!" }}
 
+  it "inherits directly from AuthorizedController" do
+    FeedbackController.ancestors[1].should equal AuthorizedController
+  end
+
+  before do
+    controller.stub!( :authorized_user? ).and_return true
+  end
+
   describe "POST 'create'" do
 
     before do

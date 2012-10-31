@@ -2,7 +2,7 @@ require 'dojo/models/feedback'
 require 'dojo/repository'
 require 'dojo/validation/feedback_validator'
 
-class FeedbackController < ApplicationController
+class FeedbackController < AuthorizedController
 
   def create
     kata_id = params[:kata_id]
