@@ -1,6 +1,6 @@
-require 'dojo/kata_repository'
-require 'dojo/feedback_repository'
-require 'dojo/user_repository'
+require 'dojo/repositories/memory/kata_repository'
+require 'dojo/repositories/memory/feedback_repository'
+require 'dojo/repositories/memory/user_repository'
 
 module Dojo
   class Repository
