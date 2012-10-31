@@ -6,6 +6,7 @@ describe Dojo::KataPresenter do
 
   before do
     repo = Dojo::Repository
+    repo.feedback.destroy_all
     @user = repo.user.save( repo.user.new( name: "John Doe" ))
     kata = example_kata.update( user: @user.id )
     @kata = repo.kata.save( repo.kata.new( kata))
