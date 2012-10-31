@@ -30,4 +30,16 @@ describe Dojo::Feedback do
     Dojo::Feedback.attributes.should == [:id, :kata_id, :user, :message]
   end
 
+  it "#== returns true if two instances have equivalent attributes" do
+    second = feedback.clone
+    ( feedback == second ).should be_true
+  end
+
+  it "#eql? returns true only if two instances have equivalent attributes" do
+    second = feedback.clone
+    ( feedback.eql? second ).should be_true
+    second.id = 123
+    ( feedback.eql? second ).should be_false
+  end
+
 end

@@ -11,6 +11,18 @@ module Dojo
       @provider = attr[:provider]
     end
 
+    def ==( user )
+      equal =       @name == user.name
+      equal &&=    @email == user.email
+      equal &&=      @uid == user.uid
+      equal &&= @provider == user.provider
+    end
+
+    def eql?( user )
+      equal =  self == user
+      equal &&= @id == user.id
+    end
+
   end
   
 end

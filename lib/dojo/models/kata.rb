@@ -14,5 +14,18 @@ module Dojo
       [:id, :title, :link, :user, :description]
     end
 
+    def ==( kata )
+      equal =          @title == kata.title
+      equal &&=         @link == kata.link
+      equal &&=         @user == kata.user
+      equal &&=  @description == kata.description
+      equal &&= @last_updated == kata.last_updated
+    end
+
+    def eql?( kata )
+      equal =  self == kata
+      equal &&= @id == kata.id
+    end
+
   end
 end

@@ -21,4 +21,16 @@ describe Dojo::User do
     user.id.should == 123
   end
 
+  it "#== returns true if two instances have equivalent attributes" do
+    second = user.clone
+    ( user == second ).should be_true
+  end
+
+  it "#eql? returns true only if two instances have equivalent attributes" do
+    second = user.clone
+    ( user.eql? second ).should be_true
+    second.id = 123
+    ( user.eql? second ).should be_false
+  end
+
 end

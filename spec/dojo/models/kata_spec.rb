@@ -32,4 +32,16 @@ describe Dojo::Kata do
     Dojo::Kata.attributes.should == [:id, :title, :link, :user, :description]
   end
 
+  it "#== returns true if two instances have equivalent attributes" do
+    second = kata.clone
+    ( kata == second ).should be_true
+  end
+
+  it "#eql? returns true only if two instances have equivalent attributes" do
+    second = kata.clone
+    ( kata.eql? second ).should be_true
+    second.id = 123
+    ( kata.eql? second ).should be_false
+  end
+
 end
