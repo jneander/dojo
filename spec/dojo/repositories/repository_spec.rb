@@ -1,23 +1,45 @@
 require 'dojo/repositories/repository'
+require 'dojo/repositories/hyperion/kata_hyp_repository'
+require 'dojo/repositories/hyperion/feedback_hyp_repository'
+require 'dojo/repositories/hyperion/user_hyp_repository'
 
 describe Dojo::Repository do
-  
-  it "::kata refers to a KataRepository singleton" do
-    repo = Dojo::Repository.kata
-    repo.should be_a Dojo::KataRepository
-    Dojo::Repository.kata.should equal repo
+
+  let(:repo) { Dojo::Repository }
+  before(:each) { repo.nuke }
+
+  it "default repository types are 'memory'" do
+    repo.kata.should be_an_instance_of( Dojo::KataRepository )
+    repo.feedback.should be_an_instance_of( Dojo::FeedbackRepository )
+    repo.user.should be_an_instance_of( Dojo::UserRepository )
   end
 
-  it "::feedback refers to a FeedbackRepository singleton" do
-    repo = Dojo::Repository.feedback
-    repo.should be_a Dojo::FeedbackRepository
-    Dojo::Repository.feedback.should equal repo
+  it "default repositories are singletons" do
+    repo.kata.should equal repo.kata
+    repo.feedback.should equal repo.feedback
+    repo.user.should equal repo.user
   end
 
-  it "::user refers to a UserRepository singleton" do
-    repo = Dojo::Repository.user
-    repo.should be_a Dojo::UserRepository
-    Dojo::Repository.user.should equal repo
+  it ":use sets repository type to 'Hyperion'" do
+    repo.use( :hyperion )
+    repo.kata.should be_an_instance_of( Dojo::KataHypRepository )
+    repo.feedback.should be_an_instance_of( Dojo::FeedbackHypRepository )
+    repo.user.should be_an_instance_of( Dojo::UserHypRepository )
+  end
+
+  it ":use preserves 'Hyperion' singletons" do
+    repo.use( :hyperion )
+    repo.kata.should equal repo.kata
+    repo.feedback.should equal repo.feedback
+    repo.user.should equal repo.user
+  end
+
+  it ":nuke nullifies Repository references" do
+    kata_repo_id = repo.kata.__id__
+    user_repo_id = repo.user.__id__
+    repo.nuke
+    repo.kata.__id__.should_not == kata_repo_id
+    repo.user.__id__.should_not == user_repo_id
   end
 
 end
