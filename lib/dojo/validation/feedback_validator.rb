@@ -9,11 +9,11 @@ module Dojo
 
     def self.errors( params )
       result = {}
-      if not integer?( params[:user] )
-        result.update( user: "Integer user must be provided" )
+      if not present?( params[:user] )
+        result.update( user: "User id must be provided" )
       end
-      if not integer?( params[:kata_id] )
-        result.update( kata_id: "Integer id must be provided" )
+      if not present?( params[:kata_id] )
+        result.update( kata_id: "Kata id must be provided" )
       end
       if not present?( params[:message] )
         result.update( message: "Message must be provided" )
