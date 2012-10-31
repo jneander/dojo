@@ -4,6 +4,8 @@ gem 'rails', '3.2.8'
 gem 'xml-simple', '1.1.2'
 gem 'omniauth', '1.1.1'
 gem 'omniauth-google-oauth2', '0.1.13'
+gem 'hyperion-api'
+gem 'hyperion-postgres'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
