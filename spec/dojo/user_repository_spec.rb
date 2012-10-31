@@ -1,6 +1,6 @@
 require 'dojo/user_repository'
 
-describe Dojo::UserRepository.new do
+describe Dojo::UserRepository do
 
   let(:repo) { Dojo::UserRepository.new }
   before(:each) { repo.destroy_all }
