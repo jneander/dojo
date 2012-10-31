@@ -9,6 +9,14 @@ describe KatasController do
   let(:base_attr) {{ title:       "Example Title",
                      description: "Example Description" }}
 
+  it "inherits directly from AuthorizedController" do
+    KatasController.ancestors[1].should equal AuthorizedController
+  end
+
+  before do
+    controller.stub!( :authorized_user? ).and_return true
+  end
+
   describe "GET 'show'" do
 
     let(:attr) { base_attr.update({ link: "http://google.com" }) }

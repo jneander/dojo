@@ -5,7 +5,7 @@ require 'dojo/services/media_service'
 require 'dojo/services/vimeo_service'
 require 'uri'
 
-class KatasController < ApplicationController
+class KatasController < AuthorizedController
 
   def show
     kata = repo.kata.find( params[:id] )
