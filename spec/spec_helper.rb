@@ -40,3 +40,15 @@ end
 def last_record(repo)
   repo.records[repo.records.keys.max]
 end
+
+def with_oauth_response( attr )
+  auth_hash = { uid:         attr[:uid],
+                provider:    attr[:provider],
+                info:        { name:   attr[:name],
+                               email:  attr[:email] } }
+
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:google_oauth2] = 
+    OmniAuth::AuthHash.new( auth_hash )
+  request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
+end
