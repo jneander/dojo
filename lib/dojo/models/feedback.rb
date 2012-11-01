@@ -4,8 +4,8 @@ module Dojo
     attr_accessor :id, :user, :created_on
 
     def initialize(attributes = {})
-      @user = attributes[:user].to_i
-      @kata_id = attributes[:kata_id].to_i
+      @user = attributes[:user]
+      @kata_id = attributes[:kata_id]
       @message = attributes[:message]
     end
 
