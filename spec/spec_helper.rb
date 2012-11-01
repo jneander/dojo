@@ -3,6 +3,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'pry'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -40,8 +41,12 @@ RSpec.configure do |config|
   config.order = "random"
 end
 
-def last_record(repo)
-  repo.records[repo.records.keys.max]
+def last_by_update( repo )
+  repo.records.values.sort { |a,b| a.last_updated <=> b.last_updated }.last
+end
+
+def last_by_creation( repo )
+  repo.records.values.sort { |a,b| a.created_on <=> b.created_on }.last
 end
 
 def with_oauth_response( attr )

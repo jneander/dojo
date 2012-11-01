@@ -3,7 +3,7 @@ require 'dojo/presenters/feedback_presenter'
 
 describe Dojo::FeedbackPresenter do
 
-  before do
+  before(:all) do
     repo = Dojo::Repository
     @user = repo.user.save( repo.user.new( name: "John Doe" ))
     feedback = { message: "Example Message", user: @user.id }

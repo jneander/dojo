@@ -9,7 +9,7 @@ describe DojoHelper do
   end
 
   it ":current_user returns the current user if signed in" do
-    session[:user_id] = 1
+    session[:user_id] = @user.id
     current_user.should == @user
   end
 

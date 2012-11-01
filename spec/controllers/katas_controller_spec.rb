@@ -21,6 +21,8 @@ describe KatasController do
 
     let(:attr) { base_attr.update({ link: "http://google.com" }) }
 
+    before { repo.nuke }
+
     before(:each) do
       @user = repo.user.save( repo.user.new({}))
       session[:user_id] = @user.id
@@ -49,7 +51,7 @@ describe KatasController do
     end
 
     it "assigns :editable to false if current user is not creator" do
-      session[:user_id] = 123456789
+      session[:user_id] = '123456789'
       get 'show', :id => @kata.id
       assigns( :editable ).should be_false
     end
@@ -249,23 +251,24 @@ describe KatasController do
 
       let(:uri) { "https://vimeo.com/50459431" }
       let(:attr) { base_attr.update( link: uri ) }
+      let(:this_kata) { last_by_update( repo.kata ) }
 
       it "creates a Kata instance" do
         lambda { post :create, attr }.
-          should change( repo.kata.records, :size ).by( 1 )
-        last_record( repo.kata ).title.should == "Example Title"
+          should change( lambda { repo.kata.records.size } , :call ).by( 1 )
+        this_kata.title.should == attr[:title]
       end
 
       it "assigns the current User" do
-        repo.user.save( repo.user.new( id: 123 ))
-        session[:user_id] = 123
+        user = repo.user.save( repo.user.new )
+        session[:user_id] = user.id
         post :create, attr
-        last_record( repo.kata ).user.should == 123
+        this_kata.user.should == user.id
       end
 
       it "redirects to the kata show page upon success" do
         post :create, attr
-        response.should redirect_to(kata_path( last_record( repo.kata ).id ))
+        response.should redirect_to(kata_path( this_kata.id ))
       end
 
     end
@@ -318,12 +321,12 @@ describe KatasController do
       it "updates the Kata instance" do
         lambda { put :update, @new_attr }.
           should_not change( repo.kata.records, :size )
-        last_record( repo.kata ).title.should == "New Title"
+        last_by_update( repo.kata ).title.should == "New Title"
       end
 
       it "redirects to the kata show page upon success" do
         post :update, @new_attr
-        response.should redirect_to(kata_path( last_record( repo.kata ).id ))
+        response.should redirect_to(kata_path( last_by_update( repo.kata ).id ))
       end
 
     end
@@ -342,7 +345,7 @@ describe KatasController do
       it "does not update the Kata instance" do
         lambda { post :update, @new_attr }.
           should_not change( repo.kata.records, :size )
-        last_record( repo.kata ).should == @kata
+        last_by_update( repo.kata ).should == @kata
       end
 
       it "redirects to the new kata page for unknown host" do

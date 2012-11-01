@@ -14,7 +14,7 @@ describe Dojo::KataPresenter do
   end
 
   it "#id returns the Kata id" do
-    @presenter.id.should be_a( Integer )
+    @presenter.id.should be_a( String )
     @presenter.id.should == @kata.id
   end
 
@@ -59,7 +59,7 @@ def example_kata
   { title:        "Example Title",
     link:         "http://www.vimeo.com/50459431",
     description:  "Example Description",
-    user:         123 }
+    user:         "123" }
 end
 
 def save_example_feedback( kata_id, message )

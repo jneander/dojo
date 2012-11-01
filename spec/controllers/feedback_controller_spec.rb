@@ -27,13 +27,13 @@ describe FeedbackController do
     
       it "creates a Feedback instance" do
         lambda { post :create, attr }.
-          should change( repo.feedback.records, :size ).by( 1 )
-        last_record( repo.feedback ).kata_id.should == 1
+          should change( lambda { repo.feedback.records.size }, :call ).by( 1 )
+        last_by_creation( repo.feedback ).kata_id.to_s.should == "1"
       end
 
       it "stores the current User" do
         post :create, attr
-        last_record( repo.feedback ).user.should == 123
+        last_by_creation( repo.feedback ).user.should == 123
       end
 
     end

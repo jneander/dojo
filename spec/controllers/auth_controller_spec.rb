@@ -48,15 +48,18 @@ describe AuthController do
 
     context "when uid is not being used" do
 
+      let(:this_user) { repo.records.values.last }
+      before(:each) { repo.destroy_all }
+
       it "creates a user" do
         lambda { create_with_google }.
-          should change( repo.records, :size ).by( 1 )
+          should change( lambda { repo.records.size }, :call ).by( 1 )
       end
 
       it "saves user attributes" do
         create_with_google
 
-        user = last_record( repo )
+        user = this_user
         user.name.should      == attr[:name]
         user.email.should     == attr[:email]
         user.uid.should       == attr[:uid]
@@ -65,7 +68,7 @@ describe AuthController do
 
       it "stores the User id in the session" do
         create_with_google
-        session[:user_id].should == last_record( repo ).id
+        session[:user_id].should == this_user.id
       end
 
       it "redirects to the Kata index" do
