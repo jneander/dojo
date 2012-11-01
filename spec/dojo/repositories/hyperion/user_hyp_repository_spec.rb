@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'dojo/repositories/hyperion/user_hyp_repository'
 
 describe Dojo::UserHypRepository do

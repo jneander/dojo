@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'dojo/repositories/hyperion/feedback_hyp_repository'
 
 describe Dojo::FeedbackHypRepository do

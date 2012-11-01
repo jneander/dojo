@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'dojo/repositories/hyperion/kata_hyp_repository'
 
 describe Dojo::KataHypRepository do
