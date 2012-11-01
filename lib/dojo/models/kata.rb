@@ -10,6 +10,13 @@ module Dojo
       @description  = attrs[:description]
     end
 
+    def update( attrs = {} )
+      @title       = attrs[:title] if attrs[:title]
+      @link        = attrs[:link] if attrs[:link]
+      @description = attrs[:description] if attrs[:description]
+      return self
+    end
+
     def self.attributes
       [:id, :title, :link, :user, :description]
     end

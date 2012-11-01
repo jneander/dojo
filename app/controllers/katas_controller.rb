@@ -53,9 +53,8 @@ class KatasController < AuthorizedController
 
   def update
     if Dojo::KataValidator.valid?( params )
-      kata = repo.kata.new( params )
-      kata.id = params[:id]
-      kata = repo.kata.save( kata )
+      kata = repo.kata.find( params[:id] )
+      kata = repo.kata.save( kata.update( params ) )
       redirect_to kata_path( kata.id )
     else
       fields = Dojo::Kata.attributes
