@@ -41,13 +41,13 @@ module Dojo
     def feedback_to_hash( feedback )
       hash = { kata_id: feedback.kata_id, message: feedback.message,
                user: feedback.user, created_on: feedback.created_on }
-      hash.update( key: feedback.id ) if feedback.id
+      hash.update( key: feedback.id.to_s ) if feedback.id
       return hash
     end
 
     def hash_to_feedback( hash )
       feedback = Feedback.new( hash )
-      feedback.id = hash[:key]
+      feedback.id = hash[:key].to_s
       feedback.created_on = hash[:created_on]
       return feedback
     end

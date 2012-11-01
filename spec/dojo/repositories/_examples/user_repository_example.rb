@@ -25,9 +25,27 @@ shared_examples "a User Repository" do
 
   it "#save preserves any existing id" do
     user = repo.new( name: "James Foo" )
+    user.id = '500'
+    user = repo.save( user )
+    user.id.should == '500'
+  end
+
+  it "#save ensures any existing id is a String" do
+    user = repo.new( name: "James Foo" )
     user.id = 500
     user = repo.save( user )
-    user.id.should == 500
+    user.id.should == '500'
+  end
+
+  it "#save stores all provided attributes" do
+    attr = { name: "John Doe", email: "example@8thlight.com",
+             uid: '1234567890', provider: :google_oauth2 }
+    user = repo.save( repo.new( attr ))
+    user = repo.find( user.id )
+    user.name.should      == attr[ :name ]
+    user.email.should     == attr[ :email ]
+    user.uid.should       == attr[ :uid ]
+    user.provider.should  == attr[ :provider ]
   end
 
   it "#find returns the User with requested id" do

@@ -9,17 +9,17 @@ module Dojo
 
     def save( feedback )
       clone = feedback.dup
-      clone.id = clone.id || records.size + 1
+      clone.id = ( clone.id || records.size + 1 ).to_s
       clone.created_on = clone.created_on || DateTime.now
-      records[clone.id] = clone
+      records[ clone.id ] = clone
     end
 
     def find( id )
-      records[id.to_i]
+      records[ id ]
     end
 
     def find_by_kata_id( id )
-      records.values.select { |fb| fb.kata_id == id.to_i }
+      records.values.select { |fb| fb.kata_id == id }
     end
 
     def records

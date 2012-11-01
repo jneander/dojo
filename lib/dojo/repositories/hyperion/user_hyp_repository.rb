@@ -46,7 +46,7 @@ module Dojo
 
     def hash_to_user( hash )
       user = User.new( hash )
-      user.id = hash[:key]
+      user.id = hash[:key].to_s
       return user
     end
 

@@ -10,12 +10,12 @@ module Dojo
 
     def save( user )
       clone = user.dup
-      clone.id = clone.id || records.size + 1
+      clone.id = ( clone.id || records.size + 1 ).to_s
       records[ clone.id ] = clone
     end
 
     def find( id )
-      records[ id.to_i ]
+      records[ id ]
     end
 
     def find_by_uid( uid, provider )

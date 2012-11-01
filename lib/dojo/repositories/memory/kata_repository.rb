@@ -4,19 +4,19 @@ require 'date'
 module Dojo
   class KataRepository
 
-    def new(attributes = {})
-      Kata.new(attributes)
+    def new( attributes = {} )
+      Kata.new( attributes )
     end
 
-    def save(kata)
+    def save( kata )
       clone = kata.dup
-      clone.id = clone.id || records.size + 1
+      clone.id = ( clone.id || records.size + 1 ).to_s
       clone.last_updated = DateTime.now
-      records[clone.id] = clone
+      records[ clone.id ] = clone
     end
 
-    def find(id)
-      records[id.to_i]
+    def find( id )
+      records[ id ]
     end
 
     def records
@@ -24,7 +24,7 @@ module Dojo
     end
 
     def sort
-      records.values.sort {|a,b| b.last_updated <=> a.last_updated}
+      records.values.sort { |a,b| b.last_updated <=> a.last_updated }
     end
 
     def destroy_all

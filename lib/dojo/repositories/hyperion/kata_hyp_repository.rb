@@ -41,7 +41,7 @@ module Dojo
       hash = { title: kata.title, link: kata.link, 
                description: kata.description, user: kata.user,
                last_updated: kata.last_updated }
-      hash.update( key: kata.id ) if kata.id
+      hash.update( key: kata.id.to_s ) if kata.id
       return hash
     end 
 
