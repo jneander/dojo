@@ -14,6 +14,7 @@ gem 'hyperion-postgres'
 group :development do
   gem 'rspec-rails', '~> 2.0'
   gem 'sqlite3', '1.3.6'
+  gem 'pry'
 end
 group :test do
   gem 'rspec', '~> 2.0'
