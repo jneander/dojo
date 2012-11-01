@@ -10,7 +10,7 @@ module Dojo
 
     def save( feedback )
       hash = feedback_to_hash( feedback )
-      hash[:created_on] ||= DateTime.now 
+      hash[:created_at] ||= DateTime.now 
       hash = Hyperion.save( { kind: :feedback }, hash )
       hash_to_feedback( hash ) if hash
     end
@@ -21,7 +21,7 @@ module Dojo
     end
 
     def find_by_kata_id( id )
-      filters = [[:kata_id, "=", id]]
+      filters = [[:kata_key, "=", id]]
       Hyperion.find_by_kind( :feedback, filters: filters ).
         map { |hash| hash_to_feedback( hash ) }
     end
@@ -39,16 +39,18 @@ module Dojo
     private
 
     def feedback_to_hash( feedback )
-      hash = { kata_id: feedback.kata_id, message: feedback.message,
-               user: feedback.user, created_on: feedback.created_on }
+      hash = { kata_key: feedback.kata_id, message: feedback.message,
+               user_key: feedback.user, created_at: feedback.created_on }
       hash.update( key: feedback.id.to_s ) if feedback.id
       return hash
     end
 
     def hash_to_feedback( hash )
+      hash.update( kata_id: hash[:kata_key] )
+      hash.update( user: hash[:user_key] )
       feedback = Feedback.new( hash )
       feedback.id = hash[:key].to_s
-      feedback.created_on = hash[:created_on]
+      feedback.created_on = hash[:created_at]
       return feedback
     end
 

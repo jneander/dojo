@@ -10,7 +10,7 @@ module Dojo
     end
 
     def save( user )
-      hash = Hyperion.save( { kind: :user }, user_to_hash( user ) )
+      hash = Hyperion.save( { kind: :users }, user_to_hash( user ) )
       hash_to_user( hash ) if hash
     end
 
@@ -21,18 +21,18 @@ module Dojo
 
     def find_by_uid( uid, provider )
       filters = [[:provider, "=", provider], [:uid, "=", uid]]
-      Hyperion.find_by_kind( :user, { filters: filters } ).
+      Hyperion.find_by_kind( :users, { filters: filters } ).
         map { |hash| hash_to_user( hash ) }
     end
 
     def records
-      result = Hyperion.find_by_kind( :user ).
+      result = Hyperion.find_by_kind( :users ).
         map { |hash| [ hash[:key], hash_to_user( hash ) ] } 
       Hash[ result ]
     end
 
     def destroy_all
-      Hyperion.delete_by_kind( :user )
+      Hyperion.delete_by_kind( :users )
     end
 
     private
